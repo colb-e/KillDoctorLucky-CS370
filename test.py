@@ -5,18 +5,6 @@ from sys import exit
 pygame.init()
 clock = pygame.time.Clock()
 pygame.display.set_caption('Kill Doctor Lucky') # title for game
-
-class Card:
-    def __init__(self, type, value, room, bonus_value, luck):
-        self.type = type # attack, movement, fail
-        self.value = value # each card has a numerical value no matter the type, the type will decide what the value is used for
-        self.room = room # will be used if the card has a room assigned for direct movement or attack bonus 
-        self.bonus_value = bonus_value # if a card has a bonus value for attacking it will be stored here
-        self.luck = luck # will hold the value of the luck for the card 
-        
-        
-    
-
 test_font = pygame.font.Font('fonts/m5x7.ttf', 50) #(font type, font size) None is the default
 
 # *** Deciding the size of the player screen ***
@@ -42,7 +30,6 @@ text_surface = test_font.render('Kill Doctor Lucky', True, 'Black').convert_alph
 # this will create a red box 
 #test_surface = pygame.Surface((100,200)) #S must be a capital, pygame.Surface((w,h))
 #test_surface.fill('Red')
-
 
 
 rect_width, rect_height = 50, 30
