@@ -16,14 +16,11 @@ screen_W, screen_L = screen.get_size()
 screen = pygame.display.set_mode((screen_W,screen_L))
 
 
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-RED = (255, 0, 0)
-
-
 # *** Building the static scene ***
+board_W = screen_W
+board_L = screen_L * 0.9
 board = pygame.image.load("images/Board2.jpg").convert()
-board = pygame.transform.scale(board, (screen_W,screen_L)).convert()
+board = pygame.transform.scale(board, (board_W,board_L)).convert()
 
 text_surface = test_font.render('Kill Doctor Lucky', True, 'Black').convert_alpha() #('insert text', True or False, 'color of text') The T or F is for anti aliasing, true usually, false if pixel art
 
@@ -33,8 +30,11 @@ text_surface = test_font.render('Kill Doctor Lucky', True, 'Black').convert_alph
 
 
 rect_width, rect_height = 50, 30
-rect_x, rect_y = (screen_W - rect_width) // 3.75, (screen_L - rect_height) // 4
+rect_x, rect_y = (screen_W - rect_width) // 4.75, (screen_L - rect_height) // 4
 
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+RED = (255, 0, 0)
 
 # *** Main game loop ***
 while True:
@@ -57,3 +57,4 @@ while True:
 
     pygame.display.update()
     clock.tick(60) # Maximum Framerate of 60
+    print(screen_L)

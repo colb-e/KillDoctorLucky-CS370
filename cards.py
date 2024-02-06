@@ -30,7 +30,7 @@ class deck:
         deck.num_of_cards += 1 # will add to sum of cards when a card is created
 
 
-    def createDeck(self):
+    def createDeck():
 
         # Move cards
         card1 = deck('move', 2, 12, 0, 2, False, False, 0)
@@ -62,5 +62,9 @@ class deck:
 
     def cardsInPlay(self):
         pass
+
+
+deck.createDeck()
+print(deck.num_of_cards)
 
 
