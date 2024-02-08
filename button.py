@@ -28,6 +28,7 @@ class Button():
 
         # draw button 
         surface.blit(self.image, (self.rect.x, self.rect.y))
-        print(self.width)
-        print(self.height)
+        
+        #print(self.width)
+        #print(self.height)
         return action
