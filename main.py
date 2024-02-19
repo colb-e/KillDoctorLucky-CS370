@@ -31,6 +31,14 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
+            
+        # Use escape key to close game (added by Z)
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                pygame.quit()
+                running = False
+                exit()
+
 
     # Draw objects to screen
     screen.blit(board,(0,0))
