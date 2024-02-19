@@ -2,16 +2,17 @@ import pygame
 
 class Player:
 
+    # All players will be this size
     player_width, player_height = 50, 30
 
-    def __init__(self, surface, color, player_x, player_y):
+    def __init__(self, surface, color, room_num, x, y):
         self.surface = surface
+        self.surface_W, self.surface_L = surface.get_size()
         self.color = color
-        self.player_x = player_x
-        self.player_y = player_y
-
-    def Draw(self):
-
-        screen_W, screen_L = self.surface.get_size() # setting length and width of screen
-        x, y = (screen_W - Player.player_width) // self.player_x, (screen_L - Player.player_height) // self.player_y #calculating location based in the size of the screen and given cords
-        pygame.draw.rect(self.surface, self.color, (x, y, Player.player_width, Player.player_height)) 
+        self.room = room_num
+        # Calcualting player location relative to given screen size
+        self.player_x = (self.surface_W - Player.player_width) // x
+        self.player_y =  (self.surface_L - Player.player_height) // y
+         
+    def DrawPlayer(self):
+       pygame.draw.rect(self.surface, self.color, (self.player_x, self.player_y, Player.player_width, Player.player_height)) 
