@@ -42,8 +42,24 @@ board = pygame.image.load("images/Board2.jpg")
 room_positions = [(250, 50), (525, 50), (600, 50), (600, 110),
                   (600, 250), (500, 250), (330, 175)]
 
+class Player1(pygame.sprite.Sprite):
+            
+    def __init__(self, x, y):
+        super().__init__()
+        self.image = pygame.Surface((50, 50))  # set surface size
+        self.image = pygame.image.load("images/fay-chanceworthy-pixilart.png").convert_alpha()
+        self.rect = self.image.get_rect()
+        self.rect.center = (x, y)  # set initial position
+
+    # Update player position to the closest room
+    def update_position(self, x, y):
+        # Calculate the distance to each room and find the closest one
+        closest_room = min(room_positions, key=lambda pos: math.hypot(pos[0] - x, pos[1] - y))
+        self.rect.center = closest_room  # Update player position to the center of closest room
+
+
 # Player class
-class Player(pygame.sprite.Sprite):
+class Player2(pygame.sprite.Sprite):
     def __init__(self, color, x, y):  # player class constructor
         super().__init__()
         self.image = pygame.Surface((50, 50))  # set surface size
@@ -75,11 +91,11 @@ class Button(pygame.sprite.Sprite):
         self.image.blit(text_surface, text_rect)
 
 # Create players
-player1 = Player((255, 0, 0), 500, 250)  # create player 1 (red at position 600, 250)
-player2 = Player((0, 0, 255), 500, 250)  # create player 2 (blue at position 500, 250)
+player1 = Player1(500, 250)  # create player 1 (red at position 600, 250)
+player2 = Player2((0, 0, 255), 500, 250)  # create player 2 (blue at position 500, 250)
 
 # Create Dr. Lucky
-drLucky = Player((0, 0, 0), 250, 50) #create Dr. Lucky (black at position 250, 50)
+drLucky = Player2((0, 0, 0), 250, 50) #create Dr. Lucky (black at position 250, 50)
 
 # Create sprite group
 all_sprites = pygame.sprite.Group()

@@ -32,7 +32,7 @@ while True:
             pygame.quit()
             exit()
             
-        # Use escape key to close game (added by Z)
+        # Use escape key to close game
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 pygame.quit()
