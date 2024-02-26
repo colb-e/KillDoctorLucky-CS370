@@ -42,6 +42,7 @@ board = pygame.image.load("images/Board2.jpg")
 room_positions = [(250, 50), (525, 50), (600, 50), (600, 110),
                   (600, 250), (500, 250), (330, 175)]
 
+# Player class 1 (done by Z)
 class Player1(pygame.sprite.Sprite):
             
     def __init__(self, x, y):
@@ -58,7 +59,7 @@ class Player1(pygame.sprite.Sprite):
         self.rect.center = closest_room  # Update player position to the center of closest room
 
 
-# Player class
+# Player class 2
 class Player2(pygame.sprite.Sprite):
     def __init__(self, color, x, y):  # player class constructor
         super().__init__()
@@ -91,7 +92,7 @@ class Button(pygame.sprite.Sprite):
         self.image.blit(text_surface, text_rect)
 
 # Create players
-player1 = Player1(500, 250)  # create player 1 (red at position 600, 250)
+player1 = Player1(500, 250)  # create player 1 (with sprite image) done by Z
 player2 = Player2((0, 0, 255), 500, 250)  # create player 2 (blue at position 500, 250)
 
 # Create Dr. Lucky
