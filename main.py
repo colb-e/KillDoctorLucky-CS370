@@ -2,6 +2,7 @@
 import pygame
 import player
 import room
+import button
 from sys import exit
 
 pygame.init()
@@ -25,15 +26,24 @@ RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 GREEN = (0, 255, 0)
 
+# Buttons
+nextTurnImage = pygame.image.load("images/next_turn.png")
+nextTurnButton = button.Button(nextTurnImage, 0, 0)
+
 # Players
+
+# grabbing starting room x and y for players to start in
+
 
 drLucky = player.Player(screen, BLACK, 0, 2, 1.8) # drawing dr lucky in room 1
 player1 = player.Player(screen, RED, 0, 2, 1.8)
 player2 = player.Player(screen, BLUE, 0, 2, 1.8)
 player3 = player.Player(screen, GREEN, 0, 2, 1.8)
 
-playerList = []
 
+playerList = []
+turnOrder = 0
+roomCount = 0
 playerList.append(drLucky)
 playerList.append(player1)
 playerList.append(player2)
@@ -45,7 +55,8 @@ drLucky.updatePlayer(TEMP) # updating player to index 1 in roomList (room 2)
 player1.updatePlayer(TEMP)
 player2.updatePlayer(TEMP)
 player3.updatePlayer(TEMP)
-
+drLucky.updatePlayer(TEMP) # updating player to index 1 in roomList (room 2)
+drLucky.updatePlayer(TEMP) # updating player to index 1 in roomList (room 2)
 while True:
 
     for event in pygame.event.get():
@@ -55,6 +66,38 @@ while True:
 
     # Draw objects to screen
     screen.blit(board,(0,0))
+    
+    # if the button is clicked
+    if nextTurnButton.drawButton(screen) == True:
+        
+        print("Moved player ", turnOrder)
+        previousRoomIndex = playerList[turnOrder].room_index
+
+        # if player is in room 24 move them to room 1
+        if previousRoomIndex == 23:
+
+            playerList[turnOrder].updatePlayer(0)
+            print("to room index 0")
+
+        # else move to player to the room index they are in + 1
+        else:
+
+            newRoomIndex = previousRoomIndex + 1
+            playerList[turnOrder].updatePlayer(newRoomIndex)
+            print("to room index ", newRoomIndex)
+
+        # after the player has moved to the next room decrease the count of the previous room by 1
+        room.roomsList[previousRoomIndex].room_count -= 1
+
+        # if the turn order is at the last player loop back to the first in the order
+        if turnOrder == 3:
+
+            turnOrder = 0
+
+        # else change the turn order index to the current index + 1
+        else:
+            turnOrder += 1
+
 
     drLucky.DrawPlayer()
     player1.DrawPlayer()

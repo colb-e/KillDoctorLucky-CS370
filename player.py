@@ -19,11 +19,17 @@ class Player:
         self.player_y = 0
         
     def updatePlayer(self, room_index):
+
         self.room_index = room_index #setting players current room_index to specified room_index
         
+        # resetting player postion
+        self.player_x = 0
+        self.player_y = 0
+
+        # grabbing cords of given room index
         x, y = room.roomsList[self.room_index].roomX, room.roomsList[self.room_index].roomY # grabbing x and y values of room player is moving to
         
-        # if a player is already in the new room move to current player to the side
+        # if a player is already in the room to be moved to place the current player to the side
 
         # 0 players in room
         if room.roomsList[self.room_index].room_count == 0:
@@ -45,6 +51,7 @@ class Player:
             self.player_y = Player.player_height + 5
             room.roomsList[self.room_index].room_count += 1 # increasing the amount of people in new room
 
+        # 3 players in room
         elif room.roomsList[self.room_index].room_count == 3:
             self.x = x
             self.y = y 
