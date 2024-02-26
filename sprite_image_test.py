@@ -16,15 +16,15 @@ window_height = 600
 screen = pygame.display.set_mode((window_width, window_height), pygame.RESIZABLE)
 
 # Set text font (added by Zhenia, but orginially done by Colby in another test program)
-test_font = pygame.font.Font('fonts/m5x7.ttf', 50) #(font type, font size)
+# test_font = pygame.font.Font('fonts/m5x7.ttf', 50) #(font type, font size)
 
 # Text for indicating the red player's turn (done by Zhenia)
-turn_red = test_font.render("Red's turn", True, (255,0,0)).convert_alpha()
-turn_red_end = test_font.render("Red's turn", True, (0,0,0)).convert_alpha()
+# turn_red = test_font.render("Red's turn", True, (255,0,0)).convert_alpha()
+# turn_red_end = test_font.render("Red's turn", True, (0,0,0)).convert_alpha()
 
 # Text for indicating the blue player's turn (done by Zhenia)
-turn_blue = test_font.render("Blue's turn", True, (0,0,255)).convert_alpha()
-turn_blue_end = test_font.render("Blue's turn", True, (0,0,0)).convert_alpha()
+# turn_blue = test_font.render("Blue's turn", True, (0,0,255)).convert_alpha()
+# turn_blue_end = test_font.render("Blue's turn", True, (0,0,0)).convert_alpha()
 
 # Variable to keep track of the current player
 currentPlayer = 1
@@ -45,10 +45,10 @@ room_positions = [(250, 50), (525, 50), (600, 50), (600, 110),
 # Player class 1 (done by Z)
 class Player1(pygame.sprite.Sprite):
             
-    def __init__(self, x, y):
+    def __init__(self, pic, x, y):
         super().__init__()
         self.image = pygame.Surface((50, 50))  # set surface size
-        self.image = pygame.image.load("images/fay-chanceworthy-pixilart.png").convert_alpha()
+        self.image = pygame.image.load(pic).convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)  # set initial position
 
@@ -92,11 +92,11 @@ class Button(pygame.sprite.Sprite):
         self.image.blit(text_surface, text_rect)
 
 # Create players
-player1 = Player1(500, 250)  # create player 1 (with sprite image) done by Z
+player1 = Player1("images/fay-chanceworthy-pixilart.png", 500, 250)  # create player 1 (with sprite image) done by Z
 player2 = Player2((0, 0, 255), 500, 250)  # create player 2 (blue at position 500, 250)
 
 # Create Dr. Lucky
-drLucky = Player2((0, 0, 0), 250, 50) #create Dr. Lucky (black at position 250, 50)
+drLucky = Player1("images/doctor-lucky-pixilart.png", 250, 50) #create Dr. Lucky (black at position 250, 50)
 
 # Create sprite group
 all_sprites = pygame.sprite.Group()
@@ -136,15 +136,15 @@ while True:
                 x, y = event.pos
                 if currentPlayer == 1:
                     # Tell it's the player's turn (added by Zhenia)
-                    screen.blit(turn_blue_end, (5,5))
-                    screen.blit(turn_red, (5,5))
+                    # screen.blit(turn_blue_end, (5,5))
+                    # screen.blit(turn_red, (5,5))
                     
                     player1.update_position(x, y)
                     
                 else:
                     # Tell it's the player's turn (added by Zhenia)
-                    screen.blit(turn_red_end, (5,5))
-                    screen.blit(turn_blue, (5,5))
+                    # screen.blit(turn_red_end, (5,5))
+                    # screen.blit(turn_blue, (5,5))
                     
                     player2.update_position(x, y)
                     
