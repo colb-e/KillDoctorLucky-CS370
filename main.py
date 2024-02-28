@@ -14,11 +14,9 @@ screen = pygame.display.set_mode()
 screen_W, screen_L = screen.get_size()
 screen = pygame.display.set_mode((screen_W,screen_L))
 
-# Game board
-board_W = screen_W * 0.9
-board_L = screen_L
-board = pygame.image.load("images/Board2.jpg").convert()
-board = pygame.transform.scale(board, (board_W,board_L)).convert()
+# Fonts
+
+default_font = pygame.font.Font(None, int(min(screen_W, screen_L) * 0.05))
 
 # Colors 
 BLACK = (0, 0, 0)
@@ -26,18 +24,7 @@ RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 GREEN = (0, 255, 0)
 
-# Buttons
-
-# here we will adjust the size and placement of the image based on the screen size
-# it should be in the sidebar
-nextTurnImage = pygame.image.load("images/next_turn.png")
-nextTurnButton = button.Button(nextTurnImage, 100, 100)
-
 # Players
-
-# grabbing starting room x and y for players to start in
-
-
 drLucky = player.Player(screen, BLACK, 0, 2, 1.8) # drawing dr lucky in room 1
 player1 = player.Player(screen, RED, 0, 2, 1.8)
 player2 = player.Player(screen, BLUE, 0, 2, 1.8)
@@ -52,7 +39,7 @@ playerList.append(player1)
 playerList.append(player2)
 playerList.append(player3)
 
-TEMP = 5
+TEMP = 0
 
 drLucky.updatePlayer(TEMP) # updating player to index 1 in roomList (room 2)
 player1.updatePlayer(TEMP)
@@ -60,6 +47,31 @@ player2.updatePlayer(TEMP)
 player3.updatePlayer(TEMP)
 drLucky.updatePlayer(TEMP) # updating player to index 1 in roomList (room 2)
 drLucky.updatePlayer(TEMP) # updating player to index 1 in roomList (room 2)
+
+# Game board
+board_W = screen_W * 0.9
+board_L = screen_L
+board = pygame.image.load("images/Board2.jpg").convert()
+board = pygame.transform.scale(board, (board_W,board_L)).convert()
+
+# Sidebar
+sidebar_W = screen_W - board_W
+
+currentPlayerText = default_font.render("Current Player:", True, BLACK)
+
+# Buttons
+nextTurnImage = pygame.image.load("images/next_turn.png")
+btn_scale = 1.5 # will change the length of the button 
+nextTurn_W, nextTurn_L = nextTurnImage.get_size() # grabbing image size
+nextTurn_W = sidebar_W # setting the width of the image to the width of the sidebar
+nextTurn_L = (nextTurn_L* btn_scale) # multiplying given scale with the image length
+nextTurnImage = pygame.transform.scale(nextTurnImage, (nextTurn_W, nextTurn_L)) # adjusting to new image size
+nextTurn_X, nextTurn_Y = (screen_W - nextTurn_W) // 1, (screen_L - nextTurn_L) // 1000 # placing the button in a relative location the // 1 and the // 1000 decide the placement
+nextTurnButton = button.Button(nextTurnImage, nextTurn_X, nextTurn_Y) # calling the button class
+
+
+
+
 while True:
 
     for event in pygame.event.get():

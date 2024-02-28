@@ -10,7 +10,6 @@ class Button:
         self.length = img.get_height()
 
 
-
     def drawButton(self, surface):
       
         action = False
