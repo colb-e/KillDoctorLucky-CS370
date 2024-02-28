@@ -15,7 +15,7 @@ screen_W, screen_L = screen.get_size()
 screen = pygame.display.set_mode((screen_W,screen_L))
 
 # Game board
-board_W = screen_W
+board_W = screen_W * 0.9
 board_L = screen_L
 board = pygame.image.load("images/Board2.jpg").convert()
 board = pygame.transform.scale(board, (board_W,board_L)).convert()
@@ -27,8 +27,11 @@ BLUE = (0, 0, 255)
 GREEN = (0, 255, 0)
 
 # Buttons
+
+# here we will adjust the size and placement of the image based on the screen size
+# it should be in the sidebar
 nextTurnImage = pygame.image.load("images/next_turn.png")
-nextTurnButton = button.Button(nextTurnImage, 0, 0)
+nextTurnButton = button.Button(nextTurnImage, 100, 100)
 
 # Players
 
@@ -49,7 +52,7 @@ playerList.append(player1)
 playerList.append(player2)
 playerList.append(player3)
 
-TEMP = 23
+TEMP = 5
 
 drLucky.updatePlayer(TEMP) # updating player to index 1 in roomList (room 2)
 player1.updatePlayer(TEMP)

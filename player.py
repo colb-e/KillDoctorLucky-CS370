@@ -21,47 +21,42 @@ class Player:
     def updatePlayer(self, room_index):
 
         self.room_index = room_index #setting players current room_index to specified room_index
-        
-        # resetting player postion
-        self.player_x = 0
-        self.player_y = 0
 
         # grabbing cords of given room index
-        x, y = room.roomsList[self.room_index].roomX, room.roomsList[self.room_index].roomY # grabbing x and y values of room player is moving to
+        # each set is equal to a different postion in each room
+        x1, y1 = room.roomsList[self.room_index].roomX1, room.roomsList[self.room_index].roomY1 
+        x2, y2 = room.roomsList[self.room_index].roomX2, room.roomsList[self.room_index].roomY2
+        x3, y3 = room.roomsList[self.room_index].roomX3, room.roomsList[self.room_index].roomY3
+        x4, y4 = room.roomsList[self.room_index].roomX4, room.roomsList[self.room_index].roomY4
         
-        # if a player is already in the room to be moved to place the current player to the side
 
         # 0 players in room
         if room.roomsList[self.room_index].room_count == 0:
-            self.x = x
-            self.y = y
+            self.x = x1
+            self.y = y1
             room.roomsList[self.room_index].room_count += 1 # increasing the amount of people in new room
 
         # 1 players in room
         elif room.roomsList[self.room_index].room_count == 1:
-            self.x = x 
-            self.y = y 
-            self.player_x = Player.player_width + 5
+            self.x = x2
+            self.y = y2 
             room.roomsList[self.room_index].room_count += 1 # increasing the amount of people in new room
 
         # 2 players in room
         elif room.roomsList[self.room_index].room_count == 2:
-            self.x = x 
-            self.y = y 
-            self.player_y = Player.player_height + 5
+            self.x = x3
+            self.y = y3 
             room.roomsList[self.room_index].room_count += 1 # increasing the amount of people in new room
 
         # 3 players in room
         elif room.roomsList[self.room_index].room_count == 3:
-            self.x = x
-            self.y = y 
-            self.player_x = Player.player_width + 5
-            self.player_y = Player.player_height + 5
+            self.x = x4
+            self.y = y4 
             room.roomsList[self.room_index].room_count += 1 # increasing the amount of people in new room
 
         # Calcualting player location relative to given screen size
-        self.player_x += (self.surface_W - Player.player_width) // self.x
-        self.player_y += (self.surface_L - Player.player_height) // self.y
+        self.player_x = (self.surface_W - Player.player_width) // self.x
+        self.player_y = (self.surface_L - Player.player_height) // self.y
             
             
     def DrawPlayer(self):

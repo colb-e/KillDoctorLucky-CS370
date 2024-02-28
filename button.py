@@ -6,9 +6,13 @@ class Button:
         self.rect=self.image.get_rect()
         self.rect.topleft=(x,y)
         self.clicked=False
+        self.width = img.get_width()
+        self.length = img.get_height()
+
+
 
     def drawButton(self, surface):
-        
+      
         action = False
 
         pos=pygame.mouse.get_pos()
@@ -21,6 +25,6 @@ class Button:
             if not pygame.mouse.get_pressed()[0]:
                 self.clicked=False
 
-
         surface.blit(self.image, (self.rect.x, self.rect.y))
+        
         return action
