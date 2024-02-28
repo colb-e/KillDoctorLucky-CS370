@@ -51,6 +51,24 @@ quitimage = pygame.transform.scale(quitImage, (quit_W, quit_L)) # adjusting to n
 quit_X, quit_Y = (screen_W - quit_W) // 1, (screen_L - quit_L) // 1 # placing the button in a relative Location the // 1 and the // 1 decide the placement
 quitButton = button.Button(quitImage, quit_X, quit_Y) # calling the button class
 
+rulesImage = pygame.image.load("images/rulesbutton.png")
+btn_scale = 1.5 # change the Length of the button
+rules_W, rules_L = rulesImage.get_size() # grabbing image size
+rules_W = sidebar_W # setting the width of the image to the width of the sidebar
+rules_l = (rules_L* btn_scale) # multiplying given scale with the image length
+rulesimage = pygame.transform.scale(rulesImage, (rules_W, rules_L)) # adjusting to new image size
+rules_X, rules_Y = (screen_W - rules_W) // 1, (screen_L - rules_L) // 3 # placing the button in a relative Location the // 1 and the // 3 decide the placement
+rulesButton = button.Button(rulesImage, rules_X, rules_Y) # calling the button class
+
+cardsImage = pygame.image.load("images/cardsbutton.png")
+btn_scale = 1.5 # change the Length of the button
+cards_W, cards_L = cardsImage.get_size() # grabbing image size
+cards_W = sidebar_W # setting the width of the image to the width of the sidebar
+cards_l = (cards_L* btn_scale) # multiplying given scale with the image length
+cardsimage = pygame.transform.scale(cardsImage, (cards_W, cards_L)) # adjusting to new image size
+cards_X, cards_Y = (screen_W - cards_W) // 1, (screen_L - cards_L) // 1.5 # placing the button in a relative Location the // 1 and the // 1.5 decide the placement
+cardsButton = button.Button(cardsImage, cards_X, cards_Y) # calling the button class
+
 # Players
 
 # grabbing starting room x and y for players to start in
@@ -132,6 +150,15 @@ while True:
             pygame.quit()
             running = False
             exit()
+            
+# if the rules button is clicked
+    if rulesButton.drawButton(screen) == True:
+        running = True
+        
+# if the cards button is clicked
+    if cardsButton.drawButton(screen) == True:
+        running = True
+
 
     drLucky.DrawPlayer()
     player_1.DrawPlayer()
