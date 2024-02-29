@@ -49,3 +49,35 @@ roomsList.append(Rooms(1.27, 1.2, 2, 2, 2, 2, 2, 2, 0)) # room 21
 roomsList.append(Rooms(1.56, 1.1, 2, 2, 2, 2, 2, 2, 0)) # room 22
 roomsList.append(Rooms(2.4, 1.1, 2, 2, 2, 2, 2, 2, 0)) # room 23
 roomsList.append(Rooms(2, 1.55, 2, 2, 2, 2, 2, 2, 0)) # room 24
+
+
+# Each list will represent a room and store the each room index that is adjacent to it 
+adjacentRooms1 = [1, 3, 5, 23]
+adjacentRooms2 = [0, 2, 3, 17, 18, 20, 21]
+adjacentRooms3 = [1, 3, 15, 16, 17, 18, 20]
+adjacentRooms4 = [0, 1, 2, 4, 5, 7, 9, 10, 11, 12, 14, 15, 16, 17, 18, 20]
+adjacentRooms5 = [3, 10, 11, 12, 5, 7, 9]
+adjacentRooms6 = [0, 6, 3, 4, 5, 7, 9, 10, 11]
+adjacentRooms7 = [7, 5, 21, 22, 23,]
+adjacentRooms8 = [6, 8, 3, 4, 5, 9, 10, 11]
+adjacentRooms9 = [7, 9]
+adjacentRooms10 = [8, 3, 4, 5, 7, 10, 11]
+adjacentRooms11 = [3, 4, 5, 7, 9, 11, 12]
+adjacentRooms12 = [10, 12, 3, 4, 5, 7, 9]
+adjacentRooms13 = [3, 4, 10, 11, 13, 14]
+adjacentRooms14 = [12, 14, 15]
+adjacentRooms15 = [12, 13, 15, 3]
+adjacentRooms16 = [13, 14, 2, 3, 16, 17]
+adjacentRooms17 = [2, 3, 15, 17, 1, 18, 20]
+adjacentRooms18 = [2, 3, 15, 16, 1, 18, 20]
+adjacentRooms19 = [19, 1, 2, 3, 17, 20]
+adjacentRooms20 = [18, 20]
+adjacentRooms21 = [21, 19, 1, 2, 3, 17, 18, 20]
+adjacentRooms22 = [1, 20, 6, 22, 23]
+adjacentRooms23 = [6, 21, 23]
+adjacentRooms24 = [0, 6, 21, 22]
+
+
+
+allAdjacentRooms = [adjacentRooms1, adjacentRooms2, ]
+
