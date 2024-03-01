@@ -22,7 +22,8 @@ class Rooms:
         self.roomY4 = roomY4
         self.room_count = room_count
         
-    
+# This will store 4 setss of cords for each postion in the room for up to 4 players and also 
+# store the amount of people in each room
 roomsList = []
         
 roomsList.append(Rooms(2.75, 1.9, 2.75, 1.7, 1.85, 1.93, 1.85, 1.7, 0)) # room 1
@@ -32,23 +33,23 @@ roomsList.append(Rooms(2.6, 3.4, 1.9, 3.6, 2, 2.4, 2.5, 2.3, 0)) # room 4
 roomsList.append(Rooms(5, 3.5, 3, 3.2, 4.8, 2.6, 3.1, 2.5, 0)) # room 5
 roomsList.append(Rooms(3.1, 1.52, 3.05, 1.9, 4.3, 1.9, 4.3, 1.54, 0)) # room 6
 roomsList.append(Rooms(3.1, 1.07, 3.3, 1.4, 4.1, 1.35, 4.2, 1.08, 0)) # room 7
-roomsList.append(Rooms(35, 1.2, 2, 2, 2, 2, 2, 2, 0)) # room 8
-roomsList.append(Rooms(35, 1.4, 2, 2, 2, 2, 2, 2, 0)) # room 9
-roomsList.append(Rooms(60, 1.9, 2, 2, 2, 2, 2, 2, 0)) # room 10
-roomsList.append(Rooms(13, 4.8, 2, 2, 2, 2, 2, 2, 0)) # room 11
-roomsList.append(Rooms(50, 15, 2, 2, 2, 2, 2, 2, 0)) # room 12
-roomsList.append(Rooms(3.75, 8, 2, 2, 2, 2, 2, 2, 0)) # room 13
-roomsList.append(Rooms(2.45, 25, 2, 2, 2, 2, 2, 2, 0)) # room 14
-roomsList.append(Rooms(2.41, 8, 2, 2, 2, 2, 2, 2, 0)) # room 15
-roomsList.append(Rooms(1.5, 25, 2, 2, 2, 2, 2, 2, 0)) # room 16
-roomsList.append(Rooms(1.2, 25, 2, 2, 2, 2, 2, 2, 0)) # room 17
-roomsList.append(Rooms(1.2, 4.5, 2, 2, 2, 2, 2, 2, 0)) # room 18
-roomsList.append(Rooms(1.2, 1.9, 2, 2, 2, 2, 2, 2, 0)) # room 19
-roomsList.append(Rooms(1.2, 1.35, 2, 2, 2, 2, 2, 2, 0)) # room 20
-roomsList.append(Rooms(1.27, 1.2, 2, 2, 2, 2, 2, 2, 0)) # room 21
-roomsList.append(Rooms(1.56, 1.1, 2, 2, 2, 2, 2, 2, 0)) # room 22
-roomsList.append(Rooms(2.4, 1.1, 2, 2, 2, 2, 2, 2, 0)) # room 23
-roomsList.append(Rooms(2, 1.55, 2, 2, 2, 2, 2, 2, 0)) # room 24
+roomsList.append(Rooms(35, 1.2, 5, 1.15, 5.5, 1.05, 30, 1.07, 0)) # room 8
+roomsList.append(Rooms(35, 1.4, 30, 1.27, 6.4, 1.28, 6.9, 1.4, 0)) # room 9
+roomsList.append(Rooms(60, 1.9, 40, 1.6, 9, 1.55, 7, 1.7, 0)) # room 10
+roomsList.append(Rooms(13, 4.8, 15, 2.7, 7, 2.6, 8, 4.4, 0)) # room 11
+roomsList.append(Rooms(50, 15, 6.5, 13, 7.2, 7, 30, 6.5, 0)) # room 12
+roomsList.append(Rooms(4.2, 8, 3.2, 6, 3.4, 25, 4, 25, 0)) # room 13
+roomsList.append(Rooms(2.7, 25, 2.6, 12, 1.9, 23, 1.95, 12.2, 0)) # room 14
+roomsList.append(Rooms(2.65, 7.85, 2.4, 4.9, 2.07, 5.2, 1.9, 7.3, 0)) # room 15
+roomsList.append(Rooms(1.5, 25, 1.65, 25, 1.55, 6.5, 1.75, 7, 0)) # room 16
+roomsList.append(Rooms(1.15, 25, 1.33, 14, 1.3, 7, 1.18, 6, 0)) # room 17
+roomsList.append(Rooms(1.2, 4.5, 1.35, 3.6, 1.31, 2.5, 1.22, 2.7, 0)) # room 18
+roomsList.append(Rooms(1.15, 1.9, 1.17, 1.55, 1.34, 1.8, 1.32, 1.6, 0)) # room 19
+roomsList.append(Rooms(1.2, 1.41, 1.15, 1.41, 1.33, 1.275, 1.25, 1.275, 0)) # room 20
+roomsList.append(Rooms(1.27, 1.21, 1.162, 1.125, 1.43, 1.15, 1.43, 1.06, 0)) # room 21
+roomsList.append(Rooms(1.56, 1.1, 1.7, 1.05, 1.65, 1.4, 1.55, 1.35, 0)) # room 22
+roomsList.append(Rooms(2.4, 1.1, 2.7, 1.2, 2.1, 1.27, 1.9, 1.15, 0)) # room 23
+roomsList.append(Rooms(2, 1.59, 2, 1.5, 2.5, 1.5, 2.5, 1.59, 0)) # room 24
 
 
 # Each list will represent a room and store the each room index that is adjacent to it 
@@ -79,5 +80,6 @@ adjacentRooms24 = [0, 6, 21, 22]
 
 
 
-allAdjacentRooms = [adjacentRooms1, adjacentRooms2, ]
+allAdjacentRooms = [adjacentRooms1, adjacentRooms2, adjacentRooms3, adjacentRooms4, adjacentRooms5, adjacentRooms6, adjacentRooms7, adjacentRooms8, adjacentRooms9, adjacentRooms10, adjacentRooms11, adjacentRooms12,
+                    adjacentRooms13, adjacentRooms14, adjacentRooms15, adjacentRooms16, adjacentRooms17, adjacentRooms18, adjacentRooms19, adjacentRooms20, adjacentRooms21, adjacentRooms22, adjacentRooms23, adjacentRooms24]
 
