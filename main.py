@@ -138,26 +138,22 @@ while True:
         else:
             turnOrder += 1
 
-    # selecting adjacent rooms
+    # will select the list of adjacent rooms equal to the current player room index
     currentRoom = room.allAdjacentRooms[playerList[turnOrder].room_index]
 
+    # for each adjacent room in the selected list 
     for adjacentRoom in currentRoom:
+        # draw the button for the this room index and if it is clicked
         if roomButtonsList[adjacentRoom].drawButton(screen) == True:
+
+            previousRoomIndex = playerList[turnOrder].room_index # save old room index
             print("Moved player ", turnOrder)
-            previousRoomIndex = playerList[turnOrder].room_index
-
-            # if player is in room 24 move them to room 1
-            if previousRoomIndex == 23:
-
-                playerList[turnOrder].updatePlayer(0)
-                print("to room index 0")
-
-            # else move to player to the room index they are in + 1
-            else:
-
-                newRoomIndex = previousRoomIndex + 1
-                playerList[turnOrder].updatePlayer(newRoomIndex)
-                print("to room index ", newRoomIndex)
+            
+            
+           
+            # move player to the adjacent room this button is equal to
+            playerList[turnOrder].updatePlayer(adjacentRoom)
+            print("From room ", previousRoomIndex, " to room ", adjacentRoom )
 
             # after the player has moved to the next room decrease the count of the previous room by 1
             room.roomsList[previousRoomIndex].room_count -= 1
