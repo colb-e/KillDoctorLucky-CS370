@@ -1,6 +1,7 @@
 # Cycle 1
 import pygame
 import player
+import player2
 import room
 import button
 from sys import exit
@@ -29,6 +30,8 @@ GREEN = (0, 255, 0)
 # Character Images
 fay = "images/fay-chanceworthy-pixilart.png"
 drlucky = "images/doctor-lucky-pixilart.png"
+gail = "images/gail-russo-pixilart.png"
+proximo = "images/proximo-domingo-pixilart.png"
 
 # Buttons
 sidebar_W = screen_W - board_W

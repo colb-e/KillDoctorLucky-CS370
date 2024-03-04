@@ -92,8 +92,8 @@ class Button(pygame.sprite.Sprite):
         self.image.blit(text_surface, text_rect)
 
 # Create players
-player1 = Player1("images/fay-chanceworthy-pixilart.png", 500, 250)  # create player 1 (with sprite image) done by Z
-player2 = Player2((0, 0, 255), 500, 250)  # create player 2 (blue at position 500, 250)
+player1 = Player1("images/proximo-domingo-pixilart.png", 500, 250)  # create player 1 (with sprite image) done by Z
+player2 = Player1("images/gail-russo-pixilart.png", 500, 250)  # create player 2 (blue at position 500, 250)
 
 # Create Dr. Lucky
 drLucky = Player1("images/doctor-lucky-pixilart.png", 250, 50) #create Dr. Lucky (black at position 250, 50)
