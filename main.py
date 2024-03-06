@@ -69,11 +69,11 @@ print("Length: ", screen_L, "Width: ", screen_W)
 
 if (screen_L >= 1440):
     sidebarScale = 1.5
-    moveButtonScale = 1
+    moveButtonScale = 0.5
 
 elif (screen_L >= 1080):
     sidebarScale = 1.2
-    moveButtonScale = 1
+    moveButtonScale = 0.5
     
 elif (screen_L >= 752):
     sidebarScale = 1
@@ -81,7 +81,7 @@ elif (screen_L >= 752):
 
 else:
     sidebarScale = 0.5
-    moveButtonScale = 1
+    moveButtonScale = 0.5
 #  *** Buttons ***
 
 # Next turn Button
