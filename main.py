@@ -69,16 +69,19 @@ print("Length: ", screen_L, "Width: ", screen_W)
 
 if (screen_L >= 1440):
     sidebarScale = 1.5
+    moveButtonScale = 1
 
 elif (screen_L >= 1080):
     sidebarScale = 1.2
-
-elif (screen_L >= 800):
+    moveButtonScale = 1
+    
+elif (screen_L >= 752):
     sidebarScale = 1
+    moveButtonScale = 0.3
 
 else:
     sidebarScale = 0.5
-
+    moveButtonScale = 1
 #  *** Buttons ***
 
 # Next turn Button
@@ -103,30 +106,30 @@ quitButton.addToSidebar(board_W, 1, 2.3)
 
 # Room movement buttons
 moveHereImage = pygame.image.load("images/move_here.png")
-room1 = button.Button(screen, moveHereImage, 2.15, 1.8, 0.5)
-room2 = button.Button(screen, moveHereImage, 1.6, 1.8, 0.5)
-room3 = button.Button(screen, moveHereImage, 1.57, 3, 0.5)
-room4 = button.Button(screen, moveHereImage, 2.2, 3.2, 0.5)
-room5 = button.Button(screen, moveHereImage, 3.7, 3, 0.5)
-room6 = button.Button(screen, moveHereImage, 3.6, 1.75, 0.5)
-room7 = button.Button(screen, moveHereImage, 3.55, 1.2, 0.5)
-room8 = button.Button(screen, moveHereImage, 9, 1.1, 0.5)
-room9 = button.Button(screen, moveHereImage, 11, 1.32, 0.5)
-room10 = button.Button(screen, moveHereImage, 13, 1.75, 0.5)
-room11 = button.Button(screen, moveHereImage, 9.6, 3.5, 0.5)
-room12 = button.Button(screen, moveHereImage, 12, 16, 0.5)
-room13 = button.Button(screen, moveHereImage, 3.5, 17, 0.5)
-room14 = button.Button(screen, moveHereImage, 2.2, 25, 0.5)
-room15 = button.Button(screen, moveHereImage, 2.2, 7.2, 0.5)
-room16 = button.Button(screen, moveHereImage, 1.61, 16, 0.5)
-room17 = button.Button(screen, moveHereImage, 1.22, 18, 0.5)
-room18 = button.Button(screen, moveHereImage, 1.26, 3.5, 0.5)
-room19 = button.Button(screen, moveHereImage, 1.22, 1.75, 0.5)
-room20 = button.Button(screen, moveHereImage, 1.25, 1.32, 0.5)
-room21 = button.Button(screen, moveHereImage, 1.28, 1.09, 0.5)
-room22 = button.Button(screen, moveHereImage, 1.62, 1.21, 0.5)
-room23 = button.Button(screen, moveHereImage, 2.23, 1.16, 0.5)
-room24 = button.Button(screen, moveHereImage, 2.15, 1.52, 0.5)
+room1 = button.Button(screen, moveHereImage, 2.15, 1.8, moveButtonScale)
+room2 = button.Button(screen, moveHereImage, 1.6, 1.8, moveButtonScale)
+room3 = button.Button(screen, moveHereImage, 1.57, 3, moveButtonScale)
+room4 = button.Button(screen, moveHereImage, 2.2, 3.2, moveButtonScale)
+room5 = button.Button(screen, moveHereImage, 3.7, 3, moveButtonScale)
+room6 = button.Button(screen, moveHereImage, 3.6, 1.75, moveButtonScale)
+room7 = button.Button(screen, moveHereImage, 3.55, 1.2, moveButtonScale)
+room8 = button.Button(screen, moveHereImage, 9, 1.1, moveButtonScale)
+room9 = button.Button(screen, moveHereImage, 11, 1.32, moveButtonScale)
+room10 = button.Button(screen, moveHereImage, 13, 1.75, moveButtonScale)
+room11 = button.Button(screen, moveHereImage, 9.6, 3.5, moveButtonScale)
+room12 = button.Button(screen, moveHereImage, 12, 16, moveButtonScale)
+room13 = button.Button(screen, moveHereImage, 3.5, 17, moveButtonScale)
+room14 = button.Button(screen, moveHereImage, 2.2, 25, moveButtonScale)
+room15 = button.Button(screen, moveHereImage, 2.2, 7.2, moveButtonScale)
+room16 = button.Button(screen, moveHereImage, 1.61, 16, moveButtonScale)
+room17 = button.Button(screen, moveHereImage, 1.22, 18, moveButtonScale)
+room18 = button.Button(screen, moveHereImage, 1.26, 3.5, moveButtonScale)
+room19 = button.Button(screen, moveHereImage, 1.22, 1.75, moveButtonScale)
+room20 = button.Button(screen, moveHereImage, 1.25, 1.32, moveButtonScale)
+room21 = button.Button(screen, moveHereImage, 1.28, 1.09, moveButtonScale)
+room22 = button.Button(screen, moveHereImage, 1.62, 1.21, moveButtonScale)
+room23 = button.Button(screen, moveHereImage, 2.23, 1.16, moveButtonScale)
+room24 = button.Button(screen, moveHereImage, 2.15, 1.52, moveButtonScale)
 
 roomButtonsList = [room1, room2, room3, room4, room5, room6, room7, room8, room9, room10,
                    room11, room12, room13, room14, room15, room16, room17, room18, room19,
