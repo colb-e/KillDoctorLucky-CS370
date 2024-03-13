@@ -3,6 +3,7 @@ import pygame
 import player
 import room
 import button
+import card
 from sys import exit
 
 pygame.init()
@@ -135,6 +136,9 @@ roomButtonsList = [room1, room2, room3, room4, room5, room6, room7, room8, room9
                    room11, room12, room13, room14, room15, room16, room17, room18, room19,
                    room20, room21, room22, room23, room24]
 
+# *** Cards ***
+cardDeck = card.Card.createDeck()
+
 
 # *** Main game loop ***
 while True:
@@ -215,6 +219,9 @@ while True:
             # else change the turn order index to the current index + 1
             else:
                 turnOrder += 1
+
+
+    cardDeck[0].drawCard(screen, 2, 2, 0.1)
 
     drLucky.DrawPlayer()
     player1.DrawPlayer()
