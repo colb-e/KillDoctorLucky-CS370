@@ -138,6 +138,7 @@ roomButtonsList = [room1, room2, room3, room4, room5, room6, room7, room8, room9
 
 # *** Cards ***
 cardDeck = card.Card.createDeck()
+displayCards = False
 player1Hand = []
 player2Hand = []
 player3Hand = []
@@ -169,9 +170,13 @@ def drawCard(playerIndex, playerHands, mainDeck):
     playerHand = playerHands[playerIndex]
     playerHand.append(topCard)
     mainDeck.pop(-1)
+    
+def playCard(turnorder):
+    pass
 
 
-drawCard(0, playerHands, cardDeck)
+#drawCard(0, playerHands, cardDeck)
+startingCards(playerHands, cardDeck)
 # *** Main game loop ***
 while True:
 
@@ -183,6 +188,8 @@ while True:
     # Draw objects to screen
     screen.blit(board, (0, 0))
     screen.blit(sidebarBackground, (sidebarBackground_X, sidebarBackground_Y))
+    
+    currentPlayerHand = playerHands[turnOrder] # equal to the list that stores the current players cards
     
     # if the button is clicked
     if nextTurnButton.drawButton(screen) == True:
@@ -215,9 +222,13 @@ while True:
         else:
             turnOrder += 1
 
+    # when a user clicks the cards button it will either display the cards or stop displaying them
     if cardsButton.drawButton(screen) == True:
-        pass
-
+        if displayCards == True:
+            displayCards = False
+        else:   
+            displayCards = True
+      
     if rulesButton.drawButton(screen) == True:
         pass
 
@@ -259,6 +270,14 @@ while True:
     player1.DrawPlayer()
     player2.DrawPlayer()
     player3.DrawPlayer()
+    
+     #logic for displaying Cards to current player
+    if (displayCards == True):
+        placement = 2
+        for card in currentPlayerHand:
+            
+            card.showCard(screen, placement, 2, 0.1)
+            placement += 0.5
 
 
     # TEMP FOR TESTING | this will show the card that player 1 has
