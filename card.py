@@ -1,6 +1,5 @@
 import pygame
-
-
+import random
 
 class Card:
 
@@ -30,33 +29,35 @@ class Card:
 
         # Movement Cards
         deck.append(Card('move', 2, 11, 0, 2, 'moveMaster.jpg'))
-        deck.append(Card('move', 2, 16, 0, 2, 'none.png'))
-        deck.append(Card('move', 1, 12, 0, 1, 'none.png'))
-        deck.append(Card('move', 1, 7, 0, 0, 'none.png'))
-        deck.append(Card('move', 1, 5, 0, 2, 'none.png'))
-        deck.append(Card('move', 1, 1, 0, 0, 'none.png'))
-        deck.append(Card('move', 1, 23, 0, 2, 'none.png'))
-        deck.append(Card('move', 2, 0, 0, 1, 'none.png'))
-        deck.append(Card('move', 2, 22, 0, 0, 'none.png'))
-        deck.append(Card('move', 1, 14, 0, 2, 'none.png'))
-        deck.append(Card('move', 1, 20, 0, 0, 'none.png'))
-        deck.append(Card('move', 2, 21, 0, 1, 'none.png'))
-        deck.append(Card('move', 1, 2, 0, 2, 'none.png'))
-        deck.append(Card('move', 1, 8, 0, 2, 'none.png'))
-        deck.append(Card('move', 1, 19, 0, 2, 'none.png'))
-        deck.append(Card('move', 2, 3, 0, 1, 'none.png'))
-        deck.append(Card('move', 1, 17, 0, 0, 'none.png'))
-        deck.append(Card('move', 1, 13, 0, 0, 'none.png'))
-        deck.append(Card('move', 1, 4, 0, 0, 'none.png'))
-        deck.append(Card('move', 1, 9, 0, 1, 'none.png'))
-        deck.append(Card('move', 1, 10, 0, 0, 'none.png'))
-        deck.append(Card('move', 1, 18, 0, 1, 'none.png'))
-        deck.append(Card('move', 1, 15, 0, 1, 'none.png'))
-        deck.append(Card('move', 2, 6, 0, 1, 'none.png'))
+        deck.append(Card('move', 2, 16, 0, 2, 'none.jpg'))
+        deck.append(Card('move', 1, 12, 0, 1, 'none.jpg'))
+        deck.append(Card('move', 1, 7, 0, 0, 'none.jpg'))
+        deck.append(Card('move', 1, 5, 0, 2, 'none.jpg'))
+        deck.append(Card('move', 1, 1, 0, 0, 'none.jpg'))
+        deck.append(Card('move', 1, 23, 0, 2, 'none.jpg'))
+        deck.append(Card('move', 2, 0, 0, 1, 'none.jpg'))
+        deck.append(Card('move', 2, 22, 0, 0, 'none.jpg'))
+        deck.append(Card('move', 1, 14, 0, 2, 'none.jpg'))
+        deck.append(Card('move', 1, 20, 0, 0, 'none.jpg'))
+        deck.append(Card('move', 2, 21, 0, 1, 'none.jpg'))
+        deck.append(Card('move', 1, 2, 0, 2, 'none.jpg'))
+        deck.append(Card('move', 1, 8, 0, 2, 'none.jpg'))
+        deck.append(Card('move', 1, 19, 0, 2, 'none.jpg'))
+        deck.append(Card('move', 2, 3, 0, 1, 'none.jpg'))
+        deck.append(Card('move', 1, 17, 0, 0, 'none.jpg'))
+        deck.append(Card('move', 1, 13, 0, 0, 'none.jpg'))
+        deck.append(Card('move', 1, 4, 0, 0, 'none.jpg'))
+        deck.append(Card('move', 1, 9, 0, 1, 'none.jpg'))
+        deck.append(Card('move', 1, 10, 0, 0, 'none.jpg'))
+        deck.append(Card('move', 1, 18, 0, 1, 'none.jpg'))
+        deck.append(Card('move', 1, 15, 0, 1, 'none.jpg'))
+        deck.append(Card('move', 2, 6, 0, 1, 'none.jpg'))
+
+        random.shuffle(deck)
 
         return deck
-
-    def drawCard(self, surface, x, y, scale):
+    
+    def showCard(self, surface, x, y, scale):
         surface_W, surface_L = surface.get_size()
         card_W, card_L = self.image.get_size()
         card_W, card_L = card_W * scale, card_L * scale

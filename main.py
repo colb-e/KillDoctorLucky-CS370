@@ -138,8 +138,40 @@ roomButtonsList = [room1, room2, room3, room4, room5, room6, room7, room8, room9
 
 # *** Cards ***
 cardDeck = card.Card.createDeck()
+player1Hand = []
+player2Hand = []
+player3Hand = []
+player4Hand = []
+
+playerHands = []
+playerHands.append(player1Hand)
+playerHands.append(player2Hand)
+playerHands.append(player3Hand)
+playerHands.append(player4Hand)
+
+def startingCards(playerHands, mainDeck):
+        
+        playerIndex = 0 # to keep track of the player we are giving cards to
+
+        # will loop through a list of lists that store the cards in each players hand,
+        # for each players hand the function will loop 6 times adding a card to their hand from the deck
+        for hand in playerHands:
+            i = 0 
+            while (i < 6):
+                
+                drawCard(playerIndex, playerHands, mainDeck) # add the last card in the deck to the players hand
+                i += 1 # track the number of cards being added
+            
+            playerIndex += 1
+
+def drawCard(playerIndex, playerHands, mainDeck):
+    topCard = mainDeck[-1]
+    playerHand = playerHands[playerIndex]
+    playerHand.append(topCard)
+    mainDeck.pop(-1)
 
 
+drawCard(0, playerHands, cardDeck)
 # *** Main game loop ***
 while True:
 
@@ -221,12 +253,18 @@ while True:
                 turnOrder += 1
 
 
-    cardDeck[0].drawCard(screen, 2, 2, 0.1)
-
+    #cardDeck[0].showCard(screen, 2, 2, 0.1)
+    
     drLucky.DrawPlayer()
     player1.DrawPlayer()
     player2.DrawPlayer()
     player3.DrawPlayer()
+
+
+    # TEMP FOR TESTING | this will show the card that player 1 has
+    print(player1Hand[0].room_index)
+    player1Hand[0].showCard(screen, 2, 2, 0.1)
+
 
     pygame.display.update()
     clock.tick(60)
