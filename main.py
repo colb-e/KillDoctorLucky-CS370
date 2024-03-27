@@ -15,6 +15,9 @@ screen = pygame.display.set_mode()
 screen_W, screen_L = screen.get_size()
 screen = pygame.display.set_mode((screen_W,screen_L))
 
+default_font = pygame.font.Font(None, int(min(screen_W, screen_L) * 0.05))
+
+
 # Game board
 board_W = screen_W * 0.9
 board_L = screen_L
@@ -33,8 +36,30 @@ drlucky = "images/doctor-lucky-pixilart.png"
 gail = "images/gail-russo-pixilart.png"
 proximo = "images/proximo-domingo-pixilart.png"
 
-# Buttons
+# Sidebar + Buttons
 sidebar_W = screen_W - board_W
+
+sidebarBackgroundImage = pygame.image.load("images/sidebarBackground.jpg")
+sidebarBackground = pygame.transform.scale(sidebarBackgroundImage, (sidebar_W, board_L)).convert()
+sidebarBackground_W, sidebarBackground_L = sidebarBackground.get_size()
+sidebarBackground_X, sidebarBackground_Y  = (screen_W - sidebarBackground_W) // 1, (screen_L - sidebarBackground_L) // 1
+
+currentPlayerText = default_font.render("Current Player:", True, BLACK)
+
+# This logic will decide the scale of the sidebar buttons depending on the screen size
+print("Length: ", screen_L, "Width: ", screen_W)
+
+if (screen_L >= 1440):
+    sidebarScale = 1.5
+
+elif (screen_L >= 1080):
+    sidebarScale = 1.2
+
+elif (screen_L >= 800):
+    sidebarScale = 1
+
+else:
+    sidebarScale = 0.5
 
 nextTurnImage = pygame.image.load("images/nextturnbutton.png")
 btn_scale = 1.5 # will change the Length of the button
@@ -71,6 +96,13 @@ cards_l = (cards_L* btn_scale) # multiplying given scale with the image length
 cardsimage = pygame.transform.scale(cardsImage, (cards_W, cards_L)) # adjusting to new image size
 cards_X, cards_Y = (screen_W - cards_W) // 1, (screen_L - cards_L) // 1.5 # placing the button in a relative Location the // 1 and the // 1.5 decide the placement
 cardsButton = button.Button(cardsImage, cards_X, cards_Y) # calling the button class
+
+# Menu background
+menubg = pygame.image.load("images/menu-background-pixilart.png")
+menu_W, menu_L = menubg.get_size()
+menuscale = 2.0
+
+
 
 # Players
 
@@ -156,6 +188,7 @@ while True:
             
 # if the rules button is clicked
     if rulesButton.drawButton(screen) == True:
+        
         running = True
         
 # if the cards button is clicked
