@@ -1,4 +1,4 @@
-# Cycle 1
+# Cycle 2
 import pygame
 import player
 import room
@@ -14,6 +14,15 @@ pygame.display.set_caption('Kill Doctor Lucky')
 screen = pygame.display.set_mode()
 screen_W, screen_L = screen.get_size()
 screen = pygame.display.set_mode((screen_W,screen_L))
+
+# *** Placement ***
+def place(surface, item, x, y):
+    surface_W, surface_L = surface.get_size()
+    item_W, item_L = item.get_size()
+    x = (surface_W - item_W) // x
+    y = (surface_L - item_L) // y
+    
+    return x, y
 
 # *** Fonts ***
 
@@ -173,6 +182,7 @@ def drawCard(playerIndex, playerHands, mainDeck):
     
 def playCard(turnorder):
     pass
+
 
 
 #drawCard(0, playerHands, cardDeck)
