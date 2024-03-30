@@ -15,15 +15,6 @@ screen = pygame.display.set_mode()
 screen_W, screen_L = screen.get_size()
 screen = pygame.display.set_mode((screen_W,screen_L))
 
-# *** Placement ***
-def place(surface, item, x, y):
-    surface_W, surface_L = surface.get_size()
-    item_W, item_L = item.get_size()
-    x = (surface_W - item_W) // x
-    y = (surface_L - item_L) // y
-    
-    return x, y
-
 # *** Fonts ***
 
 default_font = pygame.font.Font(None, int(min(screen_W, screen_L) * 0.05))
@@ -39,7 +30,6 @@ drLucky = player.Player(screen, BLACK, 0, 2, 1.8) # drawing dr lucky in room 1
 player1 = player.Player(screen, RED, 0, 2, 1.8)
 player2 = player.Player(screen, BLUE, 0, 2, 1.8)
 player3 = player.Player(screen, GREEN, 0, 2, 1.8)
-
 
 playerList = []
 turnOrder = 0
@@ -144,6 +134,11 @@ room24 = button.Button(screen, moveHereImage, 2.15, 1.52, moveButtonScale)
 roomButtonsList = [room1, room2, room3, room4, room5, room6, room7, room8, room9, room10,
                    room11, room12, room13, room14, room15, room16, room17, room18, room19,
                    room20, room21, room22, room23, room24]
+
+# Use Card Buttons
+useCardButtonImage = pygame.image.load("images/move_here.png")
+useCardButton = button.Button(screen, useCardButtonImage, 2, 2, 0.5)
+
 
 # *** Cards ***
 cardDeck = card.Card.createDeck()
@@ -283,16 +278,25 @@ while True:
     
      #logic for displaying Cards to current player
     if (displayCards == True):
-        placement = 2
+        
+        # will place first card in top right
+        card_x = 0
+        card_y = 0
+
         for card in currentPlayerHand:
             
-            card.showCard(screen, placement, 2, 0.1)
-            placement += 0.5
+            card.showCardTest(screen, card_x, 0, 0.1)
+            
+            if useCardButton.drawUseCardButton(screen, card_x, 0.2) == True:
+                print(card.room_index)
 
+
+            card_x += 0.05
 
     # TEMP FOR TESTING | this will show the card that player 1 has
-    print(player1Hand[0].room_index)
-    player1Hand[0].showCard(screen, 2, 2, 0.1)
+    #print(player1Hand[0].room_index)
+    #player1Hand[0].showCard(screen, 2, 2, 0.1)
+    #player1Hand[0].showCardTest(screen, 0.4, 0.4, 0.1)
 
 
     pygame.display.update()

@@ -30,6 +30,50 @@ class Button:
         self.rect=self.image.get_rect()
         self.rect.topleft=(btn_X, btn_Y)
 
+    def addToCardMenu(self, percent_x, percent_y):
+        btn_X = self.surface_W * percent_x
+        btn_Y = self.surface_L * percent_y
+        self.rect.topleft=(btn_X, btn_Y)
+
+
+    '''
+    This function will act the same as the drawButton function but will accept values for placing the button on the screen.
+    The reason this was made was due to a new way of placing object on the screen being implemented with the card menu.
+    This new method will take an x and y values as percentages of the screen size that we wish to place an object at.
+    The width of the screen will be multiplied by the given x value and the length of the screen will be multiplied
+    by the given y value. Both of the calculated values will be for the new x and y values for the object.
+    '''
+    def drawUseCardButton(self, surface, percent_x, percent_y):
+        btn_X = self.surface_W * percent_x
+        btn_Y = self.surface_L * percent_y
+        self.rect.topleft=(btn_X, btn_Y)
+        
+
+        action = False
+
+        pos=pygame.mouse.get_pos()
+        if self.rect.collidepoint(pos):
+            
+            if pygame.mouse.get_pressed()[0] and not self.clicked: # Left: [0], Middle: [1], Right: [2] 
+                self.clicked = True
+                action = True
+
+            if not pygame.mouse.get_pressed()[0]:
+                self.clicked=False
+
+        surface.blit(self.image, (self.rect.x, self.rect.y))
+        
+        return action
+
+    '''
+    This function will draw a button image to the screen with its already calculated size and position of the
+    button but when the button is clicked it will return a value of True. To properly allow an action to take
+    place in the click of a button we should call the button like this in the main code:
+
+    if buttonName.drawButton(screen) == True:
+        <INSERT CODE TO BE EXECUTED HERE>
+
+    '''
     def drawButton(self, surface):
       
         action = False

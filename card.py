@@ -13,8 +13,6 @@ class Card:
         self.bonus_value = bonus_value # will store bonus value if any provided
         self.luck = luck # given luck value if any
         
-        
-
         # Card organization
         self.playerHand = None
         self.inPlay = False
@@ -58,6 +56,7 @@ class Card:
         return deck
     
     def showCard(self, surface, x, y, scale):
+        
         surface_W, surface_L = surface.get_size()
         card_W, card_L = self.image.get_size()
         card_W, card_L = card_W * scale, card_L * scale
@@ -65,4 +64,19 @@ class Card:
 
         card_x = (surface_W - card_W) // x
         card_y = (surface_L - card_L) // y
+        surface.blit(image, (card_x, card_y))
+        
+
+    def showCardTest(self, surface, percent_x, percent_y, scale):
+        #resize image
+        surface_W, surface_L = surface.get_size()
+        card_W, card_L = self.image.get_size()
+        card_W, card_L = card_W * scale, card_L * scale
+        image = pygame.transform.scale(self.image, (card_W, card_L))
+
+        #place image
+
+        card_x = surface_W * percent_x
+        card_y = surface_L * percent_y
+
         surface.blit(image, (card_x, card_y))
