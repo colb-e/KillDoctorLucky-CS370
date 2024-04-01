@@ -70,18 +70,26 @@ print("Length: ", screen_L, "Width: ", screen_W)
 if (screen_L >= 1440):
     sidebarScale = 1.5
     moveButtonScale = 0.5
+    cardScale = 0.1
+    cardPlacement = 0.05
 
 elif (screen_L >= 1080):
     sidebarScale = 1.2
     moveButtonScale = 0.5
+    cardScale = 0.05
+    cardPlacement = 0.1
     
 elif (screen_L >= 752):
     sidebarScale = 1
     moveButtonScale = 0.3
+    cardScale = 0.05
+    cardPlacement = 0.1
 
 else:
     sidebarScale = 0.5
     moveButtonScale = 0.5
+    cardScale = 0.05
+    cardPlacement = 0.1
 #  *** Buttons ***
 
 # Next turn Button
@@ -143,6 +151,9 @@ useCardButton = button.Button(screen, useCardButtonImage, 2, 2, 0.5)
 # *** Cards ***
 cardDeck = card.Card.createDeck()
 displayCards = False
+movementAction = False
+CardInPlay = None
+playerMoving = 10
 player1Hand = []
 player2Hand = []
 player3Hand = []
@@ -175,27 +186,27 @@ def drawCard(playerIndex, playerHands, mainDeck):
     playerHand.append(topCard)
     mainDeck.pop(-1)
     
-def playCard(turnorder):
+    
+def playCard(card):
     pass
-
-
-
+        
+        
+        
 #drawCard(0, playerHands, cardDeck)
 startingCards(playerHands, cardDeck)
 # *** Main game loop ***
 while True:
-
+    currentPlayerHand = playerHands[turnOrder] # equal to the list that stores the current players cards
+    
+    # Draw objects to screen
+    screen.blit(board, (0, 0))
+    screen.blit(sidebarBackground, (sidebarBackground_X, sidebarBackground_Y))
+    
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
 
-    # Draw objects to screen
-    screen.blit(board, (0, 0))
-    screen.blit(sidebarBackground, (sidebarBackground_X, sidebarBackground_Y))
-    
-    currentPlayerHand = playerHands[turnOrder] # equal to the list that stores the current players cards
-    
     # if the button is clicked
     if nextTurnButton.drawButton(screen) == True:
         
@@ -240,33 +251,37 @@ while True:
     if quitButton.drawButton(screen) == True:
         pygame.quit()
         exit()
+    
+    
+    # When a movement card is played this logic will be executed
+    if (movementAction == True):
+        
+        # will select the list of adjacent rooms equal to the current player room index
+        currentRoom = room.allAdjacentRooms[playerList[turnOrder].room_index]
 
-    # will select the list of adjacent rooms equal to the current player room index
-    currentRoom = room.allAdjacentRooms[playerList[turnOrder].room_index]
+        # for each adjacent room in the selected list 
+        for adjacentRoom in currentRoom:
+            # draw the button for the this room index and if it is clicked
+            if roomButtonsList[adjacentRoom].drawButton(screen) == True:
 
-    # for each adjacent room in the selected list 
-    for adjacentRoom in currentRoom:
-        # draw the button for the this room index and if it is clicked
-        if roomButtonsList[adjacentRoom].drawButton(screen) == True:
+                previousRoomIndex = playerList[turnOrder].room_index # save old room index
+                print("Moved player ", turnOrder)
+                
+                # move player to the adjacent room this button is equal to
+                playerList[turnOrder].updatePlayer(adjacentRoom)
+                print("From room ", previousRoomIndex, " to room ", adjacentRoom )
 
-            previousRoomIndex = playerList[turnOrder].room_index # save old room index
-            print("Moved player ", turnOrder)
-            
-            # move player to the adjacent room this button is equal to
-            playerList[turnOrder].updatePlayer(adjacentRoom)
-            print("From room ", previousRoomIndex, " to room ", adjacentRoom )
+                # after the player has moved to the next room decrease the count of the previous room by 1
+                room.roomsList[previousRoomIndex].room_count -= 1
 
-            # after the player has moved to the next room decrease the count of the previous room by 1
-            room.roomsList[previousRoomIndex].room_count -= 1
+                # if the turn order is at the last player loop back to the first in the order
+                if turnOrder == 3:
 
-            # if the turn order is at the last player loop back to the first in the order
-            if turnOrder == 3:
+                    turnOrder = 0
 
-                turnOrder = 0
-
-            # else change the turn order index to the current index + 1
-            else:
-                turnOrder += 1
+                # else change the turn order index to the current index + 1
+                else:
+                    turnOrder += 1
 
 
     #cardDeck[0].showCard(screen, 2, 2, 0.1)
@@ -285,13 +300,19 @@ while True:
 
         for card in currentPlayerHand:
             
-            card.showCardTest(screen, card_x, 0, 0.1)
+            card.showCardTest(screen, card_x, 0, cardScale)
             
+            # On click of this button execute a function thay will use a card but have
+            # if statements deciding action based on card type.
             if useCardButton.drawUseCardButton(screen, card_x, 0.2) == True:
                 print(card.room_index)
+                if (card.card_type == 'move'):
+                    movementAction = True
+                    playerMoving = turnOrder
+                    CardInPlay = card
 
 
-            card_x += 0.05
+            card_x += cardPlacement
 
     # TEMP FOR TESTING | this will show the card that player 1 has
     #print(player1Hand[0].room_index)
