@@ -144,7 +144,7 @@ roomButtonsList = [room1, room2, room3, room4, room5, room6, room7, room8, room9
                    room20, room21, room22, room23, room24]
 
 # Use Card Buttons
-useCardButtonImage = pygame.image.load("images/move_here.png")
+useCardButtonImage = pygame.image.load("images/select_card.png")
 useCardButton = button.Button(screen, useCardButtonImage, 2, 2, 0.5)
 
 
@@ -282,6 +282,33 @@ while True:
                 # else change the turn order index to the current index + 1
                 else:
                     turnOrder += 1
+                
+                movementAction = False
+        
+        # This section will print the option for the player to move to the room
+        # specified on their movement card
+        if roomButtonsList[CardInPlay.room_index].drawButton(screen) == True:
+            
+            previousRoomIndex = playerList[turnOrder].room_index # save old room index
+            print("Moved player ", turnOrder)
+
+            playerList[turnOrder].updatePlayer(CardInPlay.room_index)
+            print("From room ", previousRoomIndex, " to room ", CardInPlay.room_index)
+
+            room.roomsList[previousRoomIndex].room_count -= 1
+
+            # if the turn order is at the last player loop back to the first in the order
+            if turnOrder == 3:
+
+                turnOrder = 0
+
+                # else change the turn order index to the current index + 1
+            else:
+                turnOrder += 1
+            
+            movementAction = False
+
+        
 
 
     #cardDeck[0].showCard(screen, 2, 2, 0.1)
@@ -302,15 +329,15 @@ while True:
             
             card.showCardTest(screen, card_x, 0, cardScale)
             
-            # On click of this button execute a function thay will use a card but have
+            # On click of this button execute a function that will use a card but have
             # if statements deciding action based on card type.
             if useCardButton.drawUseCardButton(screen, card_x, 0.2) == True:
                 print(card.room_index)
                 if (card.card_type == 'move'):
                     movementAction = True
-                    playerMoving = turnOrder
+                    #playerMoving = turnOrder needed?
                     CardInPlay = card
-
+                    displayCards = False
 
             card_x += cardPlacement
 
