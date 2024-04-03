@@ -150,6 +150,7 @@ useCardButton = button.Button(screen, useCardButtonImage, 2, 2, 0.5)
 
 # *** Cards ***
 cardDeck = card.Card.createDeck()
+discardPile = []
 displayCards = False
 movementAction = False
 CardInPlay = None
@@ -324,6 +325,7 @@ while True:
         # will place first card in top right
         card_x = 0
         card_y = 0
+        count = 0
 
         for card in currentPlayerHand:
             
@@ -338,8 +340,11 @@ while True:
                     #playerMoving = turnOrder needed?
                     CardInPlay = card
                     displayCards = False
+                    discardPile.append(card)
+                    currentPlayerHand.pop(count)
 
             card_x += cardPlacement
+            count += 1
 
     # TEMP FOR TESTING | this will show the card that player 1 has
     #print(player1Hand[0].room_index)
