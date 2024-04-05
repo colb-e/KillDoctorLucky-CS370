@@ -1,5 +1,6 @@
 # Cycle 2
 import pygame
+import random
 import player
 import room
 import button
@@ -104,20 +105,25 @@ moveActionButtonImage = pygame.image.load("images/movebutton.png")
 moveActionButton = button.Button(screen, moveActionButtonImage, 1, 1000, sidebarScale)
 moveActionButton.addToSidebar(board_W, 1, 7)
 
+# Draw card Button
+drawCardButtonImage = pygame.image.load("images/drawcardbutton.png")
+drawCardButton = button.Button(screen, drawCardButtonImage, 1, 1000, sidebarScale)
+drawCardButton.addToSidebar(board_W, 1, 3.45)
+
 # Cards button
 cardsBtnImage = pygame.image.load("images/cardsbutton.png")
 cardsButton = button.Button(screen, cardsBtnImage, 1, 1000, sidebarScale)
-cardsButton.addToSidebar(board_W, 1, 3.45)
+cardsButton.addToSidebar(board_W, 1, 2.3)
 
 # Rules Button 
 rulesBtnImage = pygame.image.load("images/rulesbutton.png")
 rulesButton = button.Button(screen, rulesBtnImage, 1, 1000, sidebarScale)
-rulesButton.addToSidebar(board_W, 1, 2.3)
+rulesButton.addToSidebar(board_W, 1, 1.73)
 
 # Quit Button 
 quitBtnImage = pygame.image.load("images/quitbutton.png")
 quitButton = button.Button(screen, quitBtnImage, 1, 1000, sidebarScale)
-quitButton.addToSidebar(board_W, 1, 1.73)
+quitButton.addToSidebar(board_W, 1, 1.38)
 
 # Room movement buttons
 moveHereImage = pygame.image.load("images/move_here.png")
@@ -176,32 +182,38 @@ playerHands.append(player4Hand)
 # MAKE SURE TO EDIT THIS TO SKIP OVER DR LUCKY AND NOT GIVE HIM CARDS
 def startingCards(playerHands, mainDeck):
         
-        playerIndex = 0 # to keep track of the player we are giving cards to
+        playerIndex = 0 # will stay as 0 we will skip dr lucky with if statement
 
         # will loop through a list of lists that store the cards in each players hand,
         # for each players hand the function will loop 6 times adding a card to their hand from the deck
         for hand in playerHands:
-            i = 0 
-            while (i < 6):
-                
-                drawCard(playerIndex, playerHands, mainDeck) # add the last card in the deck to the players hand
-                i += 1 # track the number of cards being added
             
+            # will skip giving dr lucky cards
+            if playerIndex > 0:
+                i = 0 
+                while (i < 6):
+                    
+                    drawCard(playerIndex, playerHands, mainDeck) # add the last card in the deck to the players hand
+                    i += 1 # track the number of cards being added
+                
             playerIndex += 1
 
 def drawCard(playerIndex, playerHands, mainDeck):
+
+    if len(cardDeck) <= 0:
+        random.shuffle(discardPile)
+        mainDeck = discardPile
+        discardPile.clear()
+
     topCard = mainDeck[-1]
     playerHand = playerHands[playerIndex]
     playerHand.append(topCard)
     mainDeck.pop(-1)
     
-    
 def playCard(card):
     pass
         
-        
-        
-#drawCard(0, playerHands, cardDeck)
+
 startingCards(playerHands, cardDeck)
 # *** Main game loop ***
 while True:
@@ -262,6 +274,13 @@ while True:
 
         elif moveActionPoints == 0:
             print("No movement points left, use a card to move if possible")
+
+    if drawCardButton.drawButton(screen) == True:
+        if (cardActionPoints > 0):
+            drawCard(turnOrder, playerHands, cardDeck)
+            cardActionPoints = 0
+        else:
+            print("You cannot draw a card, you have either drawn or played a card already.")
     
     # ** Cards Button **
     # when a user clicks the cards button it will either display the cards or stop displaying them
@@ -364,7 +383,7 @@ while True:
 
             card_x += cardPlacement
             count += 1
-
+    
     # TEMP FOR TESTING | this will show the card that player 1 has
     #print(player1Hand[0].room_index)
     #player1Hand[0].showCard(screen, 2, 2, 0.1)
