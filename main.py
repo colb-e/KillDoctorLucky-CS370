@@ -32,7 +32,7 @@ player2 = player.Player(screen, BLUE, 0, 2, 1.8)
 player3 = player.Player(screen, GREEN, 0, 2, 1.8)
 
 playerList = []
-turnOrder = 0
+turnOrder = 1
 roomCount = 0
 playerList.append(drLucky)
 playerList.append(player1)
@@ -41,12 +41,12 @@ playerList.append(player3)
 
 TEMP = 0
 
-drLucky.updatePlayer(TEMP) # updating player to index 1 in roomList (room 2)
+#drLucky.updatePlayer(TEMP) # updating player to index 1 in roomList (room 2)
 player1.updatePlayer(TEMP)
 player2.updatePlayer(TEMP)
 player3.updatePlayer(TEMP)
-drLucky.updatePlayer(TEMP) # updating player to index 1 in roomList (room 2)
-drLucky.updatePlayer(TEMP) # updating player to index 1 in roomList (room 2)
+#drLucky.updatePlayer(TEMP) # updating player to index 1 in roomList (room 2)
+drLucky.updatePlayer(14) # updating player to index 1 in roomList (room 2)
 
 #  *** Game board ***
 board_W = screen_W * 0.9
@@ -191,7 +191,17 @@ def drawCard(playerIndex, playerHands, mainDeck):
 def playCard(card):
     pass
         
-        
+
+
+def move_dr_lucky():
+    global drLucky_room, roomButtonsList
+    current_room_index = drLucky.room_index
+    next_room_index = (current_room_index + 1) % len(roomButtonsList)
+    while roomButtonsList[next_room_index] == room12:
+        next_room_index = (next_room_index + 1) % len(roomButtonsList)
+    drLucky_room = roomButtonsList[next_room_index]
+    drLucky.updatePlayer(next_room_index)
+
         
 #drawCard(0, playerHands, cardDeck)
 startingCards(playerHands, cardDeck)
@@ -207,7 +217,8 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
-
+     
+        
     # if the button is clicked
     if nextTurnButton.drawButton(screen) == True:
         
@@ -230,15 +241,32 @@ while True:
         # after the player has moved to the next room decrease the count of the previous room by 1
         room.roomsList[previousRoomIndex].room_count -= 1
 
+
         # if the turn order is at the last player loop back to the first in the order
         if turnOrder == 3:
 
-            turnOrder = 0
+            turnOrder = 1
 
         # else change the turn order index to the current index + 1
         else:
             turnOrder += 1
 
+        move_dr_lucky()
+        
+    if playerList[0].room_index == playerList[1].room_index:
+        turnOrder = 1
+        print("player1 turn now")
+
+    elif playerList[0].room_index == playerList[2].room_index:
+        turnOrder = 2
+        print("player2 turn now")
+
+    elif playerList[0].room_index == playerList[3].room_index:
+        turnOrder = 3
+        print("player3 turn now")
+
+
+        
     # when a user clicks the cards button it will either display the cards or stop displaying them
     if cardsButton.drawButton(screen) == True:
         if displayCards == True:
@@ -278,13 +306,26 @@ while True:
                 # if the turn order is at the last player loop back to the first in the order
                 if turnOrder == 3:
 
-                    turnOrder = 0
+                    turnOrder = 1
 
                 # else change the turn order index to the current index + 1
                 else:
                     turnOrder += 1
-                
+                move_dr_lucky()
                 movementAction = False
+    if playerList[0].room_index == playerList[1].room_index:
+        turnOrder = 1
+        print("player1 turn now")
+
+    elif playerList[0].room_index == playerList[2].room_index:
+        turnOrder = 2
+        print("player2 turn now")
+
+    elif playerList[0].room_index == playerList[3].room_index:
+        turnOrder = 3
+        print("player3 turn now")
+            
+               
         
         # This section will print the option for the player to move to the room
         # specified on their movement card
@@ -301,7 +342,7 @@ while True:
             # if the turn order is at the last player loop back to the first in the order
             if turnOrder == 3:
 
-                turnOrder = 0
+                turnOrder = 1
 
                 # else change the turn order index to the current index + 1
             else:
@@ -345,7 +386,18 @@ while True:
 
             card_x += cardPlacement
             count += 1
+            
+    if playerList[0].room_index == playerList[1].room_index:
+        turnOrder = 1
+        print("player1 turn now")
 
+    elif playerList[0].room_index == playerList[2].room_index:
+        turnOrder = 2
+        print("player2 turn now")
+
+    elif playerList[0].room_index == playerList[3].room_index:
+        turnOrder = 3
+    print("player3 turn now")
     # TEMP FOR TESTING | this will show the card that player 1 has
     #print(player1Hand[0].room_index)
     #player1Hand[0].showCard(screen, 2, 2, 0.1)
