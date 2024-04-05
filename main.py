@@ -32,8 +32,10 @@ player2 = player.Player(screen, BLUE, 0, 2, 1.8)
 player3 = player.Player(screen, GREEN, 0, 2, 1.8)
 
 playerList = []
-turnOrder = 0
+turnOrder = 1
 roomCount = 0
+moveActionPoints = 1
+cardActionPoints = 1
 playerList.append(drLucky)
 playerList.append(player1)
 playerList.append(player2)
@@ -76,8 +78,8 @@ if (screen_L >= 1440):
 elif (screen_L >= 1080):
     sidebarScale = 1.2
     moveButtonScale = 0.5
-    cardScale = 0.05
-    cardPlacement = 0.1
+    cardScale = 0.08
+    cardPlacement = 0.08
     
 elif (screen_L >= 752):
     sidebarScale = 1
@@ -97,20 +99,25 @@ nextTurnImage = pygame.image.load("images/nextturnbutton.png")
 nextTurnButton = button.Button(screen, nextTurnImage, 1, 1000, sidebarScale)
 nextTurnButton.addToSidebar(board_W, 1, 1000)
 
+# Move Button
+moveActionButtonImage = pygame.image.load("images/movebutton.png")
+moveActionButton = button.Button(screen, moveActionButtonImage, 1, 1000, sidebarScale)
+moveActionButton.addToSidebar(board_W, 1, 7)
+
 # Cards button
 cardsBtnImage = pygame.image.load("images/cardsbutton.png")
 cardsButton = button.Button(screen, cardsBtnImage, 1, 1000, sidebarScale)
-cardsButton.addToSidebar(board_W, 1, 7)
+cardsButton.addToSidebar(board_W, 1, 3.45)
 
 # Rules Button 
 rulesBtnImage = pygame.image.load("images/rulesbutton.png")
 rulesButton = button.Button(screen, rulesBtnImage, 1, 1000, sidebarScale)
-rulesButton.addToSidebar(board_W, 1, 3.45)
+rulesButton.addToSidebar(board_W, 1, 2.3)
 
 # Quit Button 
 quitBtnImage = pygame.image.load("images/quitbutton.png")
 quitButton = button.Button(screen, quitBtnImage, 1, 1000, sidebarScale)
-quitButton.addToSidebar(board_W, 1, 2.3)
+quitButton.addToSidebar(board_W, 1, 1.73)
 
 # Room movement buttons
 moveHereImage = pygame.image.load("images/move_here.png")
@@ -166,6 +173,7 @@ playerHands.append(player2Hand)
 playerHands.append(player3Hand)
 playerHands.append(player4Hand)
 
+# MAKE SURE TO EDIT THIS TO SKIP OVER DR LUCKY AND NOT GIVE HIM CARDS
 def startingCards(playerHands, mainDeck):
         
         playerIndex = 0 # to keep track of the player we are giving cards to
@@ -208,39 +216,57 @@ while True:
             pygame.quit()
             exit()
 
-    # if the button is clicked
+    # ****** SIDEBAR BUTTONS ******
+            
+    # ** Next Turn Button **
+    # When a player ends their turn we will move Dr lucky to the next room
+    # and increment the turn order, this button should be the only way for 
+    # the turn order to update
     if nextTurnButton.drawButton(screen) == True:
         
-        print("Moved player ", turnOrder)
-        previousRoomIndex = playerList[turnOrder].room_index
+        moveActionPoints = 1
+        cardActionPoints = 1
+        movementAction = False
 
-        # if player is in room 24 move them to room 1
+        print("Moved Dr. Lucky")
+        previousRoomIndex = playerList[0].room_index
+
+        # if Dr. Lucky is in room 24 move them to room 1
         if previousRoomIndex == 23:
 
-            playerList[turnOrder].updatePlayer(0)
+            playerList[0].updatePlayer(0)
             print("to room index 0")
 
-        # else move to player to the room index they are in + 1
         else:
 
             newRoomIndex = previousRoomIndex + 1
-            playerList[turnOrder].updatePlayer(newRoomIndex)
+            playerList[0].updatePlayer(newRoomIndex)
             print("to room index ", newRoomIndex)
 
-        # after the player has moved to the next room decrease the count of the previous room by 1
         room.roomsList[previousRoomIndex].room_count -= 1
 
-        # if the turn order is at the last player loop back to the first in the order
+        # if the turn order is at the last player loop back to the first human player and skip Dr. Lucky
         if turnOrder == 3:
 
-            turnOrder = 0
+            turnOrder = 1 # this will stay as 1 since Dr. lucky will only take an action when a player ends their turn
 
         # else change the turn order index to the current index + 1
         else:
             turnOrder += 1
 
+    # ** Move button **
+    if moveActionButton.drawButton(screen) == True:
+        if moveActionPoints > 0:
+            
+            movementAction = True
+
+        elif moveActionPoints == 0:
+            print("No movement points left, use a card to move if possible")
+    
+    # ** Cards Button **
     # when a user clicks the cards button it will either display the cards or stop displaying them
     if cardsButton.drawButton(screen) == True:
+
         if displayCards == True:
             displayCards = False
         else:   
@@ -253,8 +279,7 @@ while True:
         pygame.quit()
         exit()
     
-    
-    # When a movement card is played this logic will be executed
+    # When a movement action is triggered this will execute
     if (movementAction == True):
         
         # will select the list of adjacent rooms equal to the current player room index
@@ -275,39 +300,27 @@ while True:
                 # after the player has moved to the next room decrease the count of the previous room by 1
                 room.roomsList[previousRoomIndex].room_count -= 1
 
-                # if the turn order is at the last player loop back to the first in the order
-                if turnOrder == 3:
-
-                    turnOrder = 0
-
-                # else change the turn order index to the current index + 1
-                else:
-                    turnOrder += 1
-                
+                moveActionPoints -= 1
                 movementAction = False
+                CardInPlay = None
         
         # This section will print the option for the player to move to the room
         # specified on their movement card
-        if roomButtonsList[CardInPlay.room_index].drawButton(screen) == True:
-            
-            previousRoomIndex = playerList[turnOrder].room_index # save old room index
-            print("Moved player ", turnOrder)
+        if CardInPlay != None:  
 
-            playerList[turnOrder].updatePlayer(CardInPlay.room_index)
-            print("From room ", previousRoomIndex, " to room ", CardInPlay.room_index)
+            if roomButtonsList[CardInPlay.room_index].drawButton(screen) == True:
+                
+                previousRoomIndex = playerList[turnOrder].room_index # save old room index
+                print("Moved player ", turnOrder)
 
-            room.roomsList[previousRoomIndex].room_count -= 1
+                playerList[turnOrder].updatePlayer(CardInPlay.room_index)
+                print("From room ", previousRoomIndex, " to room ", CardInPlay.room_index)
 
-            # if the turn order is at the last player loop back to the first in the order
-            if turnOrder == 3:
+                room.roomsList[previousRoomIndex].room_count -= 1
 
-                turnOrder = 0
-
-                # else change the turn order index to the current index + 1
-            else:
-                turnOrder += 1
-            
-            movementAction = False
+                moveActionPoints -= 1
+                movementAction = False
+                CardInPlay = None
 
         
 
@@ -332,16 +345,22 @@ while True:
             card.showCardTest(screen, card_x, 0, cardScale)
             
             # On click of this button execute a function that will use a card but have
-            # if statements deciding action based on card type.
-            if useCardButton.drawUseCardButton(screen, card_x, 0.2) == True:
-                print(card.room_index)
-                if (card.card_type == 'move'):
-                    movementAction = True
-                    #playerMoving = turnOrder needed?
-                    CardInPlay = card
-                    displayCards = False
-                    discardPile.append(card)
-                    currentPlayerHand.pop(count)
+            # if statements deciding action based on card type. if a player has already
+            # played a card the select buttons will not be shown
+            if cardActionPoints > 0:
+                if useCardButton.drawUseCardButton(screen, card_x, 0.2) == True:
+                    print(card.room_index)
+                    if (card.card_type == 'move'):
+                        
+                        movementAction = True
+                        moveActionPoints += card.value
+                        
+                        CardInPlay = card
+                        cardActionPoints = 0
+                        displayCards = False
+
+                        discardPile.append(card)
+                        currentPlayerHand.pop(count)
 
             card_x += cardPlacement
             count += 1
