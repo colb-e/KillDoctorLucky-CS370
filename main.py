@@ -189,7 +189,14 @@ while True:
 # if the rules button is clicked
     if rulesButton.drawButton(screen) == True:
         
-        running = True
+        rulesBG = pygame.image.load("images/game_menu_bg2.png")
+        rulesBG_W, rulesBG_L = rulesBG.get_size()
+        screen.blit(rulesBG, ((screen_W / 2) - (rulesBG_W / 2)), ((screen_L / 2) - (rulesBG_L / 2)))
+        pygame.display.update()
+            
+        # if event.type == pygame.MOUSEBUTTONDOWN:
+
+        
         
 # if the cards button is clicked
     if cardsButton.drawButton(screen) == True:
