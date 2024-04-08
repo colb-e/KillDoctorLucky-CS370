@@ -23,6 +23,7 @@ class Card:
         self.image = pygame.image.load('images/cards/' + image_name).convert()
 
     def createDeck():
+        
         deck = []
 
         # Movement Cards

@@ -230,6 +230,9 @@ def drawCard(playerIndex, playerHands, mainDeck):
     
 def playCard(card):
     pass
+
+# *** Testing ***
+playerHandCounter = 1
         
 startingCards(playerHands, cardDeck)
 # *** Main game loop ***
@@ -321,17 +324,18 @@ while True:
 
         # Check each room in site and if any room has a player in it set canKill to false
         for siteLineRoom in currentSightLines:
-            print(room.roomsList[siteLineRoom].room_count)
+            #print(room.roomsList[siteLineRoom].room_count)
+
+            # eventually rename canKill to outOfSite and possibly add a var that will save the room in site that is occupied
             if room.roomsList[siteLineRoom].room_count > 0:
                 canKill = False
 
-        print(currentPlayerRoom)
-        print(drLuckyRoom)
-        print(canKill)
+        print("player ", turnOrder, " room location: ", currentPlayerRoom)
+        print("Dr. Lucky room location: ", drLuckyRoom)
 
-        # if the currentplayer is in 
+        # if the current player is alone in a room with Dr. Lucky and out of site they can attack
         if currentPlayerRoom == drLuckyRoom and canKill == True and room.roomsList[drLuckyRoom].room_count == 2:
-            print('you can kill Dr. Lucky')
+            print("you can kill Dr. Lucky, player ", turnOrder, " WINS!")
         else:
             print("you cannot kill doctor Lucky")
       
@@ -352,6 +356,11 @@ while True:
         for adjacentRoom in currentRoom:
             # draw the button for the this room index and if it is clicked
             if roomButtonsList[adjacentRoom].drawButton(screen) == True:
+                
+                # Movement card testing
+                print("Movement Points after play: ", moveActionPoints)
+                print("---------- END -----------")
+
 
                 previousRoomIndex = playerList[turnOrder].room_index # save old room index
                 print("Moved player ", turnOrder)
@@ -374,6 +383,9 @@ while True:
         if CardInPlay != None:  
 
             if roomButtonsList[CardInPlay.room_index].drawButton(screen) == True:
+
+                # Movement card testing
+                print("Movement Points after play: ", moveActionPoints)
                 
                 previousRoomIndex = playerList[turnOrder].room_index # save old room index
                 print("Moved player ", turnOrder)
@@ -388,7 +400,7 @@ while True:
                 moveActionPoints -= 1
                 movementAction = False
                 CardInPlay = None
-
+                
     drLucky.DrawPlayer()
     player1.DrawPlayer()
     player2.DrawPlayer()
@@ -411,9 +423,19 @@ while True:
             # played a card the select buttons will not be shown
             if cardActionPoints > 0:
                 if useCardButton.drawUseCardButton(screen, card_x, 0.2) == True:
-                    print(card.room_index)
+
+                    # Testing Card System
+                    print("---- CARD SYSTEM TESTING ----")
+                    print("player ", turnOrder, " hand BEFORE play:")
+                    for currentCard in currentPlayerHand:
+                            print(currentCard.room_index)
+
+                    print("----------------------------")
+
                     if (card.card_type == 'move'):
                         
+                        oldMovePoints = moveActionPoints # testing movement cards
+
                         movementAction = True
                         moveActionPoints += card.value
                         
@@ -423,6 +445,23 @@ while True:
 
                         discardPile.append(card)
                         currentPlayerHand.pop(count)
+
+                        # Testing Card System
+                        print('player ', turnOrder, " played Move card ", CardInPlay.room_index)
+
+                        print("player ", turnOrder, " hand AFTER play:")
+                        for currentCard in currentPlayerHand:
+                            print(currentCard.room_index)
+
+                        print("----------------------------")
+                        print("Discard Pile: ")
+                        for currentCard in discardPile:
+                            print(currentCard.room_index)
+                        print("---------- END -----------")
+
+                        print("---- Movement Card Testing ----")
+                        print("Movement Points before play: ", oldMovePoints)
+                        print("Movement card value: ", CardInPlay.value)
 
             card_x += cardPlacement
             count += 1
