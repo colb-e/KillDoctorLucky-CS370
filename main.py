@@ -45,11 +45,25 @@ playerList.append(player3)
 TEMP = 0
 
 drLucky.updatePlayer(TEMP) # updating player to index 1 in roomList (room 2)
+room.roomsList[0].room_count = 1
 player1.updatePlayer(TEMP)
+room.roomsList[0].room_count = 2
 player2.updatePlayer(TEMP)
+room.roomsList[0].room_count = 3
 player3.updatePlayer(TEMP)
-drLucky.updatePlayer(TEMP) # updating player to index 1 in roomList (room 2)
-drLucky.updatePlayer(TEMP) # updating player to index 1 in roomList (room 2)
+room.roomsList[0].room_count = 4
+
+# this function will properly rearrange and place all of the players in a room. 
+# this should only be called after a player leaves a room, it was made to solve
+# an issue with placement in a room directly after a player leaves the said room.
+def updateRoom(roomIndex):
+    room.roomsList[roomIndex].room_count = 0
+    
+    for player in playerList:
+        if player.room_index == roomIndex:
+            player.updatePlayer(roomIndex)
+            room.roomsList[roomIndex].room_count += 1
+
 
 #  *** Game board ***
 board_W = screen_W * 0.9
@@ -115,15 +129,20 @@ cardsBtnImage = pygame.image.load("images/cardsbutton.png")
 cardsButton = button.Button(screen, cardsBtnImage, 1, 1000, sidebarScale)
 cardsButton.addToSidebar(board_W, 1, 2.3)
 
+# Kill Button
+killBtnImage = pygame.image.load("images/KillButton.png")
+killButton = button.Button(screen, killBtnImage, 1, 1000, sidebarScale)
+killButton.addToSidebar(board_W, 1, 1.73)
+
 # Rules Button 
 rulesBtnImage = pygame.image.load("images/rulesbutton.png")
 rulesButton = button.Button(screen, rulesBtnImage, 1, 1000, sidebarScale)
-rulesButton.addToSidebar(board_W, 1, 1.73)
+rulesButton.addToSidebar(board_W, 1, 1.38)
 
 # Quit Button 
 quitBtnImage = pygame.image.load("images/quitbutton.png")
 quitButton = button.Button(screen, quitBtnImage, 1, 1000, sidebarScale)
-quitButton.addToSidebar(board_W, 1, 1.38)
+quitButton.addToSidebar(board_W, 1, 1.16)
 
 # Room movement buttons
 moveHereImage = pygame.image.load("images/move_here.png")
@@ -179,7 +198,6 @@ playerHands.append(player2Hand)
 playerHands.append(player3Hand)
 playerHands.append(player4Hand)
 
-# MAKE SURE TO EDIT THIS TO SKIP OVER DR LUCKY AND NOT GIVE HIM CARDS
 def startingCards(playerHands, mainDeck):
         
         playerIndex = 0 # will stay as 0 we will skip dr lucky with if statement
@@ -213,7 +231,6 @@ def drawCard(playerIndex, playerHands, mainDeck):
 def playCard(card):
     pass
         
-
 startingCards(playerHands, cardDeck)
 # *** Main game loop ***
 while True:
@@ -256,6 +273,8 @@ while True:
             print("to room index ", newRoomIndex)
 
         room.roomsList[previousRoomIndex].room_count -= 1
+        room.roomsList[newRoomIndex].room_count += 1
+        updateRoom(previousRoomIndex)
 
         # if the turn order is at the last player loop back to the first human player and skip Dr. Lucky
         if turnOrder == 3:
@@ -275,6 +294,7 @@ while True:
         elif moveActionPoints == 0:
             print("No movement points left, use a card to move if possible")
 
+    # ** Draw card button **
     if drawCardButton.drawButton(screen) == True:
         if (cardActionPoints > 0):
             drawCard(turnOrder, playerHands, cardDeck)
@@ -290,6 +310,30 @@ while True:
             displayCards = False
         else:   
             displayCards = True
+
+    # ** Kill button **
+    if killButton.drawButton(screen) == True:
+
+        currentPlayerRoom = playerList[turnOrder].room_index
+        drLuckyRoom = playerList[0].room_index
+        currentSightLines = room.allSightLines[currentPlayerRoom]
+        canKill = True
+
+        # Check each room in site and if any room has a player in it set canKill to false
+        for siteLineRoom in currentSightLines:
+            print(room.roomsList[siteLineRoom].room_count)
+            if room.roomsList[siteLineRoom].room_count > 0:
+                canKill = False
+
+        print(currentPlayerRoom)
+        print(drLuckyRoom)
+        print(canKill)
+
+        # if the currentplayer is in 
+        if currentPlayerRoom == drLuckyRoom and canKill == True and room.roomsList[drLuckyRoom].room_count == 2:
+            print('you can kill Dr. Lucky')
+        else:
+            print("you cannot kill doctor Lucky")
       
     if rulesButton.drawButton(screen) == True:
         pass
@@ -318,6 +362,8 @@ while True:
 
                 # after the player has moved to the next room decrease the count of the previous room by 1
                 room.roomsList[previousRoomIndex].room_count -= 1
+                room.roomsList[adjacentRoom].room_count += 1
+                updateRoom(previousRoomIndex)
 
                 moveActionPoints -= 1
                 movementAction = False
@@ -336,21 +382,18 @@ while True:
                 print("From room ", previousRoomIndex, " to room ", CardInPlay.room_index)
 
                 room.roomsList[previousRoomIndex].room_count -= 1
+                room.roomsList[CardInPlay.room_index].room_count += 1
+                updateRoom(previousRoomIndex)
 
                 moveActionPoints -= 1
                 movementAction = False
                 CardInPlay = None
 
-        
-
-
-    #cardDeck[0].showCard(screen, 2, 2, 0.1)
-    
     drLucky.DrawPlayer()
     player1.DrawPlayer()
     player2.DrawPlayer()
     player3.DrawPlayer()
-    
+
      #logic for displaying Cards to current player
     if (displayCards == True):
         
@@ -383,12 +426,11 @@ while True:
 
             card_x += cardPlacement
             count += 1
-    
+
     # TEMP FOR TESTING | this will show the card that player 1 has
     #print(player1Hand[0].room_index)
     #player1Hand[0].showCard(screen, 2, 2, 0.1)
     #player1Hand[0].showCardTest(screen, 0.4, 0.4, 0.1)
-
 
     pygame.display.update()
     clock.tick(60)

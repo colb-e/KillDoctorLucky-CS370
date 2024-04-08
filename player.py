@@ -34,26 +34,22 @@ class Player:
         if room.roomsList[self.room_index].room_count == 0:
             self.x = x1
             self.y = y1
-            room.roomsList[self.room_index].room_count += 1 # increasing the amount of people in new room
-
+            
         # 1 players in room
         elif room.roomsList[self.room_index].room_count == 1:
             self.x = x2
             self.y = y2 
-            room.roomsList[self.room_index].room_count += 1 # increasing the amount of people in new room
-
+            
         # 2 players in room
         elif room.roomsList[self.room_index].room_count == 2:
             self.x = x3
             self.y = y3 
-            room.roomsList[self.room_index].room_count += 1 # increasing the amount of people in new room
-
+            
         # 3 players in room
         elif room.roomsList[self.room_index].room_count == 3:
             self.x = x4
             self.y = y4 
-            room.roomsList[self.room_index].room_count += 1 # increasing the amount of people in new room
-
+            
         # Calcualting player location relative to given screen size
         self.player_x = (self.surface_W - Player.player_width) // self.x
         self.player_y = (self.surface_L - Player.player_height) // self.y
