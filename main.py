@@ -37,6 +37,7 @@ turnOrder = 1
 roomCount = 0
 moveActionPoints = 1
 cardActionPoints = 1
+
 playerList.append(drLucky)
 playerList.append(player1)
 playerList.append(player2)
@@ -184,7 +185,13 @@ useCardButton = button.Button(screen, useCardButtonImage, 2, 2, 0.5)
 cardDeck = card.Card.createDeck()
 discardPile = []
 displayCards = False
+
 movementAction = False
+WeaponCard = True
+drawCardAction = True
+playCard = True
+murderAttempt = False
+
 CardInPlay = None
 playerMoving = 10
 player1Hand = []
@@ -227,14 +234,9 @@ def drawCard(playerIndex, playerHands, mainDeck):
     playerHand = playerHands[playerIndex]
     playerHand.append(topCard)
     mainDeck.pop(-1)
-    
-def playCard(card):
-    pass
-
-# *** Testing ***
-playerHandCounter = 1
         
 startingCards(playerHands, cardDeck)
+
 # *** Main game loop ***
 while True:
     currentPlayerHand = playerHands[turnOrder] # equal to the list that stores the current players cards
@@ -257,7 +259,10 @@ while True:
     if nextTurnButton.drawButton(screen) == True:
         
         moveActionPoints = 1
-        cardActionPoints = 1
+        WeaponCard = True
+        drawCardAction = True
+        playCard = True
+        murderAttempt = False
         movementAction = False
 
         print("Moved Dr. Lucky")
@@ -299,9 +304,10 @@ while True:
 
     # ** Draw card button **
     if drawCardButton.drawButton(screen) == True:
-        if (cardActionPoints > 0):
+        if (drawCardAction == True):
             drawCard(turnOrder, playerHands, cardDeck)
-            cardActionPoints = 0
+            drawCardAction = False
+            playCard = False
         else:
             print("You cannot draw a card, you have either drawn or played a card already.")
     
@@ -309,35 +315,41 @@ while True:
     # when a user clicks the cards button it will either display the cards or stop displaying them
     if cardsButton.drawButton(screen) == True:
 
-        if displayCards == True:
+        if (displayCards == True):
             displayCards = False
         else:   
             displayCards = True
 
     # ** Kill button **
     if killButton.drawButton(screen) == True:
+        if (murderAttempt == False):
 
-        currentPlayerRoom = playerList[turnOrder].room_index
-        drLuckyRoom = playerList[0].room_index
-        currentSightLines = room.allSightLines[currentPlayerRoom]
-        canKill = True
+            murderAttempt = True
+            drawCardAction = False # if player plays a card set drawcard to false
 
-        # Check each room in site and if any room has a player in it set canKill to false
-        for siteLineRoom in currentSightLines:
-            #print(room.roomsList[siteLineRoom].room_count)
+            currentPlayerRoom = playerList[turnOrder].room_index
+            drLuckyRoom = playerList[0].room_index
+            currentSightLines = room.allSightLines[currentPlayerRoom]
+            outOfSight = True
 
-            # eventually rename canKill to outOfSite and possibly add a var that will save the room in site that is occupied
-            if room.roomsList[siteLineRoom].room_count > 0:
-                canKill = False
+            # Check each room in site and if any room has a player in it set outOfSight to false
+            for siteLineRoom in currentSightLines:
+                #print(room.roomsList[siteLineRoom].room_count)
 
-        print("player ", turnOrder, " room location: ", currentPlayerRoom)
-        print("Dr. Lucky room location: ", drLuckyRoom)
+                # eventually rename canKill to outOfSite and possibly add a var that will save the room in site that is occupied
+                if room.roomsList[siteLineRoom].room_count > 0:
+                    outOfSight = False
 
-        # if the current player is alone in a room with Dr. Lucky and out of site they can attack
-        if currentPlayerRoom == drLuckyRoom and canKill == True and room.roomsList[drLuckyRoom].room_count == 2:
-            print("you can kill Dr. Lucky, player ", turnOrder, " WINS!")
+            print("player ", turnOrder, " room location: ", currentPlayerRoom)
+            print("Dr. Lucky room location: ", drLuckyRoom)
+
+            # if the current player is alone in a room with Dr. Lucky and out of site they can attack
+            if currentPlayerRoom == drLuckyRoom and outOfSight == True and room.roomsList[drLuckyRoom].room_count == 2:
+                print("you can kill Dr. Lucky, player ", turnOrder, " WINS!")
+            else:
+                print("you cannot kill doctor Lucky")
         else:
-            print("you cannot kill doctor Lucky")
+            print("You cannot attempt to Kill Dr. Lucky again this turn.")
       
     if rulesButton.drawButton(screen) == True:
         pass
@@ -421,7 +433,7 @@ while True:
             # On click of this button execute a function that will use a card but have
             # if statements deciding action based on card type. if a player has already
             # played a card the select buttons will not be shown
-            if cardActionPoints > 0:
+            if (playCard == True):
                 if useCardButton.drawUseCardButton(screen, card_x, 0.2) == True:
 
                     # Testing Card System
@@ -440,7 +452,7 @@ while True:
                         moveActionPoints += card.value
                         
                         CardInPlay = card
-                        cardActionPoints = 0
+                        drawCardAction = False # if player plays a card set drawcard to false
                         displayCards = False
 
                         discardPile.append(card)
@@ -462,6 +474,15 @@ while True:
                         print("---- Movement Card Testing ----")
                         print("Movement Points before play: ", oldMovePoints)
                         print("Movement card value: ", CardInPlay.value)
+                    
+                    if (card.card_type == 'weapon'):
+                        # after a weapon card is played a player cannot play another
+                        if (WeaponCard == False):
+                            print("You cannot play another Weapon card!")
+                        else:
+                            WeaponCard = False
+                            drawCardAction = False # if player plays a card set drawcard to false
+                            
 
             card_x += cardPlacement
             count += 1
