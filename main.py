@@ -16,10 +16,6 @@ screen = pygame.display.set_mode()
 screen_W, screen_L = screen.get_size()
 screen = pygame.display.set_mode((screen_W,screen_L))
 
-# *** Fonts ***
-
-default_font = pygame.font.Font(None, int(min(screen_W, screen_L) * 0.05))
-
 #  *** Colors ***
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
@@ -80,8 +76,6 @@ sidebarBackground = pygame.transform.scale(sidebarBackgroundImage, (sidebar_W, b
 sidebarBackground_W, sidebarBackground_L = sidebarBackground.get_size()
 sidebarBackground_X, sidebarBackground_Y  = (screen_W - sidebarBackground_W) // 1, (screen_L - sidebarBackground_L) // 1
 
-currentPlayerText = default_font.render("Current Player:", True, BLACK)
-
 # This logic will decide the scale of the sidebar buttons depending on the screen size
 print("Length: ", screen_L, "Width: ", screen_W)
 
@@ -90,24 +84,52 @@ if (screen_L >= 1440):
     moveButtonScale = 0.5
     cardScale = 0.58
     cardPlacement = 0.05
+    currentDisplayTextScale_W = 0.85
+    currentDisplayRectScale = 0.15
 
 elif (screen_L >= 1080):
     sidebarScale = 1.2
     moveButtonScale = 0.5
     cardScale = 0.45
     cardPlacement = 0.075
+    currentDisplayTextScale_W = 0.8
+    currentDisplayRectScale = 0.21
     
 elif (screen_L >= 752):
     sidebarScale = 1
     moveButtonScale = 0.3
     cardScale = 0.35
     cardPlacement = 0.075
+    currentDisplayTextScale_W = 0.8
+    currentDisplayRectScale = 0.20
 
 else:
     sidebarScale = 0.5
     moveButtonScale = 0.5
     cardScale = 0.05
     cardPlacement = 0.1
+    currentDisplayTextScale_W = 0.8
+    currentDisplayRectScale = 0.2
+    
+
+default_font = pygame.font.Font(None, int(min(screen_W, screen_L) * 0.05))
+currentPlayerText = default_font.render("Current Player:", True, BLACK)
+
+def displayCurrentPlayer(font, currentPlayer):
+    color = currentPlayer.color
+  
+
+    text = font.render("Current Player: ", True, color)
+    text_x = board_W * currentDisplayTextScale_W
+    text_y = 0
+    rect_x = text_x + (text_x * currentDisplayRectScale)
+    rect_y = 12
+    
+
+    screen.blit(text, (text_x, text_y))
+    pygame.draw.rect(screen, color, (rect_x, rect_y, 50, 30))
+
+   
 #  *** Buttons ***
 
 # Next turn Button
@@ -264,6 +286,7 @@ while True:
         playCard = True
         murderAttempt = False
         movementAction = False
+        displayCards = False
 
         print("Moved Dr. Lucky")
         previousRoomIndex = playerList[0].room_index
@@ -417,6 +440,8 @@ while True:
     player1.DrawPlayer()
     player2.DrawPlayer()
     player3.DrawPlayer()
+
+    displayCurrentPlayer(default_font, playerList[turnOrder])
 
      #logic for displaying Cards to current player
     if (displayCards == True):

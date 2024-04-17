@@ -137,6 +137,7 @@ class Card:
 
         return deck
     
+    # NOT IN USE
     def showCard(self, surface, x, y, scale):
         
         surface_W, surface_L = surface.get_size()
