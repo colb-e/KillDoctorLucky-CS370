@@ -88,20 +88,20 @@ print("Length: ", screen_L, "Width: ", screen_W)
 if (screen_L >= 1440):
     sidebarScale = 1.5
     moveButtonScale = 0.5
-    cardScale = 0.1
+    cardScale = 0.58
     cardPlacement = 0.05
 
 elif (screen_L >= 1080):
     sidebarScale = 1.2
     moveButtonScale = 0.5
-    cardScale = 0.08
-    cardPlacement = 0.08
+    cardScale = 0.45
+    cardPlacement = 0.075
     
 elif (screen_L >= 752):
     sidebarScale = 1
     moveButtonScale = 0.3
-    cardScale = 0.05
-    cardPlacement = 0.1
+    cardScale = 0.35
+    cardPlacement = 0.075
 
 else:
     sidebarScale = 0.5
