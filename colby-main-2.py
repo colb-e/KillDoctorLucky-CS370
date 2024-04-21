@@ -27,10 +27,10 @@ BLUE = (0, 0, 255)
 GREEN = (0, 255, 0)
 
 # *** Players ***
-drLucky = player4.Player4(screen, BLACK, 0, 2, 1.8) # drawing dr lucky in room 1
-player1 = player4.Player4(screen, RED, 0, 2, 1.8)
-player2 = player4.Player4(screen, BLUE, 0, 2, 1.8)
-player3 = player4.Player4(screen, GREEN, 0, 2, 1.8)
+drLucky = player4.Player(screen, BLACK, 0, 2, 1.8) # drawing dr lucky in room 1
+player1 = player4.Player(screen, RED, 0, 2, 1.8)
+player2 = player4.Player(screen, BLUE, 0, 2, 1.8)
+player3 = player4.Player(screen, GREEN, 0, 2, 1.8)
 
 playerList = []
 turnOrder = 1
