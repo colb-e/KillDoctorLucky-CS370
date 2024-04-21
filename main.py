@@ -168,7 +168,7 @@ quitButton = button.Button(screen, quitBtnImage, 1, 1000, sidebarScale)
 quitButton.addToSidebar(board_W, 1, 1.16)
 
 # Room movement buttons
-moveHereImage = pygame.image.load("images/move_here.png")
+moveHereImage = pygame.image.load("images/MoveHereButton.png")
 room1 = button.Button(screen, moveHereImage, 2.15, 1.8, moveButtonScale)
 room2 = button.Button(screen, moveHereImage, 1.6, 1.8, moveButtonScale)
 room3 = button.Button(screen, moveHereImage, 1.57, 3, moveButtonScale)
@@ -209,10 +209,16 @@ discardPile = []
 displayCards = False
 
 movementAction = False
-WeaponCard = True
+
 drawCardAction = True
 playCard = True
+
+WeaponCard = True
+murderPoints = 1
 murderAttempt = False
+
+failPoints = 0
+failAllowed = False
 
 CardInPlay = None
 playerMoving = 10
@@ -247,10 +253,15 @@ def startingCards(playerHands, mainDeck):
 
 def drawCard(playerIndex, playerHands, mainDeck):
 
+    # if the deck is empty reshuffle the discard and set the deck equal to the shuffled discard
     if len(cardDeck) <= 0:
-        random.shuffle(discardPile)
-        mainDeck = discardPile
-        discardPile.clear()
+        # if the discard is also empty tell the player they cannot draw
+        if len(discardPile) <= 0:
+            print("Cannot draw card, the deck and discard pile are empty!")
+        else:
+            random.shuffle(discardPile)
+            mainDeck = discardPile
+            discardPile.clear()
 
     topCard = mainDeck[-1]
     playerHand = playerHands[playerIndex]
@@ -281,6 +292,8 @@ while True:
     if nextTurnButton.drawButton(screen) == True:
         
         moveActionPoints = 1
+        murderPoints = 1
+        failPoints = 0
         WeaponCard = True
         drawCardAction = True
         playCard = True
@@ -327,13 +340,26 @@ while True:
 
     # ** Draw card button **
     if drawCardButton.drawButton(screen) == True:
-        if (drawCardAction == True):
-            drawCard(turnOrder, playerHands, cardDeck)
-            drawCardAction = False
-            playCard = False
-        else:
-            print("You cannot draw a card, you have either drawn or played a card already.")
-    
+        
+        currentPlayerRoom = playerList[turnOrder].room_index
+        currentSightLines = room.allSightLines[currentPlayerRoom]
+        outOfSight = True
+
+        
+        for siteLineRoom in currentSightLines:
+            #print(room.roomsList[siteLineRoom].room_count)
+            if room.roomsList[siteLineRoom].room_count > 0:
+                    outOfSight = False
+
+        if (room.roomsList[currentPlayerRoom].room_count == 1 and outOfSight == True):
+
+            if (drawCardAction == True):
+                drawCard(turnOrder, playerHands, cardDeck)
+                drawCardAction = False
+                playCard = False
+            else:
+                print("You cannot draw a card, you have either drawn or played a card already.")
+        
     # ** Cards Button **
     # when a user clicks the cards button it will either display the cards or stop displaying them
     if cardsButton.drawButton(screen) == True:
@@ -461,52 +487,47 @@ while True:
             if (playCard == True):
                 if useCardButton.drawUseCardButton(screen, card_x, 0.2) == True:
 
-                    # Testing Card System
-                    print("---- CARD SYSTEM TESTING ----")
-                    print("player ", turnOrder, " hand BEFORE play:")
-                    for currentCard in currentPlayerHand:
-                            print(currentCard.room_index)
-
-                    print("----------------------------")
-
                     if (card.card_type == 'move'):
                         
                         oldMovePoints = moveActionPoints # testing movement cards
 
                         movementAction = True
                         moveActionPoints += card.value
-                        
-                        CardInPlay = card
-                        drawCardAction = False # if player plays a card set drawcard to false
-                        displayCards = False
-
-                        discardPile.append(card)
-                        currentPlayerHand.pop(count)
-
-                        # Testing Card System
-                        print('player ', turnOrder, " played Move card ", CardInPlay.room_index)
-
-                        print("player ", turnOrder, " hand AFTER play:")
-                        for currentCard in currentPlayerHand:
-                            print(currentCard.room_index)
-
-                        print("----------------------------")
-                        print("Discard Pile: ")
-                        for currentCard in discardPile:
-                            print(currentCard.room_index)
-                        print("---------- END -----------")
-
-                        print("---- Movement Card Testing ----")
-                        print("Movement Points before play: ", oldMovePoints)
-                        print("Movement card value: ", CardInPlay.value)
                     
                     if (card.card_type == 'weapon'):
+
                         # after a weapon card is played a player cannot play another
                         if (WeaponCard == False):
                             print("You cannot play another Weapon card!")
                         else:
                             WeaponCard = False
                             drawCardAction = False # if player plays a card set drawcard to false
+                            if (playerList[turnOrder].room_index == card.room_index):
+                                murderPoints = card.bonus_value
+                            else:
+                                murderPoints = card.value
+
+                            print("Player ", turnOrder, " has ", murderPoints, " murderPoints.")
+                    
+                    if (card.card_type == 'fail'):
+
+                        if (failAllowed == True):
+                            failPoints += card.value
+                            print("Added ", card.value, " to the fail points, Total: ", failPoints)
+                        else:
+                            print("You cannot use that card until a murder attempt occurs")
+                    
+
+                    CardInPlay = card
+                    #drawCardAction = False # if player plays a card set drawcard to false
+                    displayCards = False
+
+                    # if the card being used is a fail card it will be removed from player rather than being placed into the discard pile
+                    if (card.card_type == 'fail'):
+                        currentPlayerHand.pop(count)
+                    else: 
+                        discardPile.append(card)
+                        currentPlayerHand.pop(count)
                             
 
             card_x += cardPlacement
