@@ -68,6 +68,18 @@ board_L = screen_L
 board = pygame.image.load("images/Board2.jpg").convert()
 board = pygame.transform.scale(board, (board_W,board_L)).convert()
 
+#  *** Main Menu Screen ***
+mainM_W = screen_W
+mainM_L = screen_L
+mainM = pygame.image.load("images/main_menu.png").convert()
+mainM = pygame.transform.scale(mainM, (mainM_W,mainM_L)).convert()
+
+#  *** Credits Screen ***
+credits_W = screen_W
+credits_L = screen_L
+credits = pygame.image.load("images/credits.png").convert()
+credits = pygame.transform.scale(credits, (credits_W, credits_L)).convert()
+
 # *** Sidebar ***
 sidebar_W = screen_W - board_W
 
@@ -125,11 +137,9 @@ def displayCurrentPlayer(font, currentPlayer):
     rect_x = text_x + (text_x * currentDisplayRectScale)
     rect_y = 12
     
-
     screen.blit(text, (text_x, text_y))
     pygame.draw.rect(screen, color, (rect_x, rect_y, 50, 30))
 
-   
 #  *** Buttons ***
 
 # Next turn Button
@@ -272,271 +282,323 @@ startingCards(playerHands, cardDeck)
 
 # *** Main game loop ***
 while True:
-    currentPlayerHand = playerHands[turnOrder] # equal to the list that stores the current players cards
+
+    state = "menu"
     
-    # Draw objects to screen
-    screen.blit(board, (0, 0))
-    screen.blit(sidebarBackground, (sidebarBackground_X, sidebarBackground_Y))
-    
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            exit()
-
-    # ****** SIDEBAR BUTTONS ******
+    # While the state is the menu, draw the menu
+    while (state == "menu"):
+        
+        screen.blit(mainM, (0,0))
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
             
-    # ** Next Turn Button **
-    # When a player ends their turn we will move Dr lucky to the next room
-    # and increment the turn order, this button should be the only way for 
-    # the turn order to update
-    if nextTurnButton.drawButton(screen) == True:
+        #  Use escape key to close game and space to switch states
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    pygame.quit()
+                    running = False
+                    exit()
+                if event.key == pygame.K_RETURN:
+                    state = "board"
+                if event.key == pygame.K_SPACE:
+                    state = "credits"
+                    
+        pygame.display.update()
+        clock.tick(60)
         
-        moveActionPoints = 1
-        murderPoints = 1
-        failPoints = 0
-        WeaponCard = True
-        drawCardAction = True
-        playCard = True
-        murderAttempt = False
-        movementAction = False
-        displayCards = False
-
-        print("Moved Dr. Lucky")
-        previousRoomIndex = playerList[0].room_index
-
-        # if Dr. Lucky is in room 24 move them to room 1
-        if previousRoomIndex == 23:
-
-            playerList[0].updatePlayer(0)
-            print("to room index 0")
-
-        else:
-
-            newRoomIndex = previousRoomIndex + 1
-            playerList[0].updatePlayer(newRoomIndex)
-            print("to room index ", newRoomIndex)
-
-        room.roomsList[previousRoomIndex].room_count -= 1
-        room.roomsList[newRoomIndex].room_count += 1
-        updateRoom(previousRoomIndex)
-
-        # if the turn order is at the last player loop back to the first human player and skip Dr. Lucky
-        if turnOrder == 3:
-
-            turnOrder = 1 # this will stay as 1 since Dr. lucky will only take an action when a player ends their turn
-
-        # else change the turn order index to the current index + 1
-        else:
-            turnOrder += 1
-
-    # ** Move button **
-    if moveActionButton.drawButton(screen) == True:
-        if moveActionPoints > 0:
+        
+    # While the state is the credits, display the credits screen
+    while (state == "credits"):
+        screen.blit(credits, (0,0))
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
             
-            movementAction = True
+        #  Use escape key to close game and space to switch states
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    pygame.quit()
+                    running = False
+                    exit()
+                if event.key == pygame.K_SPACE:
+                    state = "menu"
+                    
+        pygame.display.update()
+        clock.tick(60)
 
-        elif moveActionPoints == 0:
-            print("No movement points left, use a card to move if possible")
 
-    # ** Draw card button **
-    if drawCardButton.drawButton(screen) == True:
+    # Main game loop
+    while (state == "board"):
+        currentPlayerHand = playerHands[turnOrder] # equal to the list that stores the current players cards
         
-        currentPlayerRoom = playerList[turnOrder].room_index
-        currentSightLines = room.allSightLines[currentPlayerRoom]
-        outOfSight = True
-
+        # Draw objects to screen
+        screen.blit(board, (0, 0))
+        screen.blit(sidebarBackground, (sidebarBackground_X, sidebarBackground_Y))
         
-        for siteLineRoom in currentSightLines:
-            #print(room.roomsList[siteLineRoom].room_count)
-            if room.roomsList[siteLineRoom].room_count > 0:
-                    outOfSight = False
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
 
-        if (room.roomsList[currentPlayerRoom].room_count == 1 and outOfSight == True):
-
-            if (drawCardAction == True):
-                drawCard(turnOrder, playerHands, cardDeck)
-                drawCardAction = False
-                playCard = False
-            else:
-                print("You cannot draw a card, you have either drawn or played a card already.")
-        
-    # ** Cards Button **
-    # when a user clicks the cards button it will either display the cards or stop displaying them
-    if cardsButton.drawButton(screen) == True:
-
-        if (displayCards == True):
+        # ****** SIDEBAR BUTTONS ******
+                
+        # ** Next Turn Button **
+        # When a player ends their turn we will move Dr lucky to the next room
+        # and increment the turn order, this button should be the only way for 
+        # the turn order to update
+        if nextTurnButton.drawButton(screen) == True:
+            
+            moveActionPoints = 1
+            murderPoints = 1
+            failPoints = 0
+            WeaponCard = True
+            drawCardAction = True
+            playCard = True
+            murderAttempt = False
+            movementAction = False
             displayCards = False
-        else:   
-            displayCards = True
 
-    # ** Kill button **
-    if killButton.drawButton(screen) == True:
-        if (murderAttempt == False):
+            print("Moved Dr. Lucky")
+            previousRoomIndex = playerList[0].room_index
 
-            murderAttempt = True
-            drawCardAction = False # if player plays a card set drawcard to false
+            # if Dr. Lucky is in room 24 move them to room 1
+            if previousRoomIndex == 23:
 
+                playerList[0].updatePlayer(0)
+                print("to room index 0")
+
+            else:
+
+                newRoomIndex = previousRoomIndex + 1
+                playerList[0].updatePlayer(newRoomIndex)
+                print("to room index ", newRoomIndex)
+
+            room.roomsList[previousRoomIndex].room_count -= 1
+            room.roomsList[newRoomIndex].room_count += 1
+            updateRoom(previousRoomIndex)
+
+            # if the turn order is at the last player loop back to the first human player and skip Dr. Lucky
+            if turnOrder == 3:
+
+                turnOrder = 1 # this will stay as 1 since Dr. lucky will only take an action when a player ends their turn
+
+            # else change the turn order index to the current index + 1
+            else:
+                turnOrder += 1
+
+        # ** Move button **
+        if moveActionButton.drawButton(screen) == True:
+            if moveActionPoints > 0:
+                
+                movementAction = True
+
+            elif moveActionPoints == 0:
+                print("No movement points left, use a card to move if possible")
+
+        # ** Draw card button **
+        if drawCardButton.drawButton(screen) == True:
+            
             currentPlayerRoom = playerList[turnOrder].room_index
-            drLuckyRoom = playerList[0].room_index
             currentSightLines = room.allSightLines[currentPlayerRoom]
             outOfSight = True
 
-            # Check each room in site and if any room has a player in it set outOfSight to false
+            
             for siteLineRoom in currentSightLines:
                 #print(room.roomsList[siteLineRoom].room_count)
-
-                # eventually rename canKill to outOfSite and possibly add a var that will save the room in site that is occupied
                 if room.roomsList[siteLineRoom].room_count > 0:
-                    outOfSight = False
+                        outOfSight = False
 
-            print("player ", turnOrder, " room location: ", currentPlayerRoom)
-            print("Dr. Lucky room location: ", drLuckyRoom)
+            if (room.roomsList[currentPlayerRoom].room_count == 1 and outOfSight == True):
 
-            # if the current player is alone in a room with Dr. Lucky and out of site they can attack
-            if currentPlayerRoom == drLuckyRoom and outOfSight == True and room.roomsList[drLuckyRoom].room_count == 2:
-                print("you can kill Dr. Lucky, player ", turnOrder, " WINS!")
+                if (drawCardAction == True):
+                    drawCard(turnOrder, playerHands, cardDeck)
+                    drawCardAction = False
+                    playCard = False
+                else:
+                    print("You cannot draw a card, you have either drawn or played a card already.")
+            
+        # ** Cards Button **
+        # when a user clicks the cards button it will either display the cards or stop displaying them
+        if cardsButton.drawButton(screen) == True:
+
+            if (displayCards == True):
+                displayCards = False
+            else:   
+                displayCards = True
+
+        # ** Kill button **
+        if killButton.drawButton(screen) == True:
+            if (murderAttempt == False):
+
+                murderAttempt = True
+                drawCardAction = False # if player plays a card set drawcard to false
+
+                currentPlayerRoom = playerList[turnOrder].room_index
+                drLuckyRoom = playerList[0].room_index
+                currentSightLines = room.allSightLines[currentPlayerRoom]
+                outOfSight = True
+
+                # Check each room in site and if any room has a player in it set outOfSight to false
+                for siteLineRoom in currentSightLines:
+                    #print(room.roomsList[siteLineRoom].room_count)
+
+                    # eventually rename canKill to outOfSite and possibly add a var that will save the room in site that is occupied
+                    if room.roomsList[siteLineRoom].room_count > 0:
+                        outOfSight = False
+
+                print("player ", turnOrder, " room location: ", currentPlayerRoom)
+                print("Dr. Lucky room location: ", drLuckyRoom)
+
+                # if the current player is alone in a room with Dr. Lucky and out of site they can attack
+                if currentPlayerRoom == drLuckyRoom and outOfSight == True and room.roomsList[drLuckyRoom].room_count == 2:
+                    print("you can kill Dr. Lucky, player ", turnOrder, " WINS!")
+                else:
+                    print("you cannot kill doctor Lucky")
             else:
-                print("you cannot kill doctor Lucky")
-        else:
-            print("You cannot attempt to Kill Dr. Lucky again this turn.")
-      
-    if rulesButton.drawButton(screen) == True:
-        pass
-
-    if quitButton.drawButton(screen) == True:
-        pygame.quit()
-        exit()
-    
-    # When a movement action is triggered this will execute
-    if (movementAction == True):
+                print("You cannot attempt to Kill Dr. Lucky again this turn.")
         
-        # will select the list of adjacent rooms equal to the current player room index
-        currentRoom = room.allAdjacentRooms[playerList[turnOrder].room_index]
+        if rulesButton.drawButton(screen) == True:
+            pass
 
-        # for each adjacent room in the selected list 
-        for adjacentRoom in currentRoom:
-            # draw the button for the this room index and if it is clicked
-            if roomButtonsList[adjacentRoom].drawButton(screen) == True:
-                
-                # Movement card testing
-                print("Movement Points after play: ", moveActionPoints)
-                print("---------- END -----------")
-
-
-                previousRoomIndex = playerList[turnOrder].room_index # save old room index
-                print("Moved player ", turnOrder)
-                
-                # move player to the adjacent room this button is equal to
-                playerList[turnOrder].updatePlayer(adjacentRoom)
-                print("From room ", previousRoomIndex, " to room ", adjacentRoom )
-
-                # after the player has moved to the next room decrease the count of the previous room by 1
-                room.roomsList[previousRoomIndex].room_count -= 1
-                room.roomsList[adjacentRoom].room_count += 1
-                updateRoom(previousRoomIndex)
-
-                moveActionPoints -= 1
-                movementAction = False
-                CardInPlay = None
+        if quitButton.drawButton(screen) == True:
+            pygame.quit()
+            exit()
         
-        # This section will print the option for the player to move to the room
-        # specified on their movement card
-        if CardInPlay != None:  
-
-            if roomButtonsList[CardInPlay.room_index].drawButton(screen) == True:
-
-                # Movement card testing
-                print("Movement Points after play: ", moveActionPoints)
-                
-                previousRoomIndex = playerList[turnOrder].room_index # save old room index
-                print("Moved player ", turnOrder)
-
-                playerList[turnOrder].updatePlayer(CardInPlay.room_index)
-                print("From room ", previousRoomIndex, " to room ", CardInPlay.room_index)
-
-                room.roomsList[previousRoomIndex].room_count -= 1
-                room.roomsList[CardInPlay.room_index].room_count += 1
-                updateRoom(previousRoomIndex)
-
-                moveActionPoints -= 1
-                movementAction = False
-                CardInPlay = None
-                
-    drLucky.DrawPlayer()
-    player1.DrawPlayer()
-    player2.DrawPlayer()
-    player3.DrawPlayer()
-
-    displayCurrentPlayer(default_font, playerList[turnOrder])
-
-     #logic for displaying Cards to current player
-    if (displayCards == True):
-        
-        # will place first card in top right
-        card_x = 0
-        card_y = 0
-        count = 0
-
-        for card in currentPlayerHand:
+        # When a movement action is triggered this will execute
+        if (movementAction == True):
             
-            card.showCardTest(screen, card_x, 0, cardScale)
+            # will select the list of adjacent rooms equal to the current player room index
+            currentRoom = room.allAdjacentRooms[playerList[turnOrder].room_index]
+
+            # for each adjacent room in the selected list 
+            for adjacentRoom in currentRoom:
+                # draw the button for the this room index and if it is clicked
+                if roomButtonsList[adjacentRoom].drawButton(screen) == True:
+                    
+                    # Movement card testing
+                    print("Movement Points after play: ", moveActionPoints)
+                    print("---------- END -----------")
+
+
+                    previousRoomIndex = playerList[turnOrder].room_index # save old room index
+                    print("Moved player ", turnOrder)
+                    
+                    # move player to the adjacent room this button is equal to
+                    playerList[turnOrder].updatePlayer(adjacentRoom)
+                    print("From room ", previousRoomIndex, " to room ", adjacentRoom )
+
+                    # after the player has moved to the next room decrease the count of the previous room by 1
+                    room.roomsList[previousRoomIndex].room_count -= 1
+                    room.roomsList[adjacentRoom].room_count += 1
+                    updateRoom(previousRoomIndex)
+
+                    moveActionPoints -= 1
+                    movementAction = False
+                    CardInPlay = None
             
-            # On click of this button execute a function that will use a card but have
-            # if statements deciding action based on card type. if a player has already
-            # played a card the select buttons will not be shown
-            if (playCard == True):
-                if useCardButton.drawUseCardButton(screen, card_x, 0.2) == True:
+            # This section will print the option for the player to move to the room
+            # specified on their movement card
+            if CardInPlay != None:  
 
-                    if (card.card_type == 'move'):
-                        
-                        oldMovePoints = moveActionPoints # testing movement cards
+                if roomButtonsList[CardInPlay.room_index].drawButton(screen) == True:
 
-                        movementAction = True
-                        moveActionPoints += card.value
+                    # Movement card testing
+                    print("Movement Points after play: ", moveActionPoints)
                     
-                    if (card.card_type == 'weapon'):
+                    previousRoomIndex = playerList[turnOrder].room_index # save old room index
+                    print("Moved player ", turnOrder)
 
-                        # after a weapon card is played a player cannot play another
-                        if (WeaponCard == False):
-                            print("You cannot play another Weapon card!")
-                        else:
-                            WeaponCard = False
-                            drawCardAction = False # if player plays a card set drawcard to false
-                            if (playerList[turnOrder].room_index == card.room_index):
-                                murderPoints = card.bonus_value
-                            else:
-                                murderPoints = card.value
+                    playerList[turnOrder].updatePlayer(CardInPlay.room_index)
+                    print("From room ", previousRoomIndex, " to room ", CardInPlay.room_index)
 
-                            print("Player ", turnOrder, " has ", murderPoints, " murderPoints.")
+                    room.roomsList[previousRoomIndex].room_count -= 1
+                    room.roomsList[CardInPlay.room_index].room_count += 1
+                    updateRoom(previousRoomIndex)
+
+                    moveActionPoints -= 1
+                    movementAction = False
+                    CardInPlay = None
                     
-                    if (card.card_type == 'fail'):
+        drLucky.DrawPlayer()
+        player1.DrawPlayer()
+        player2.DrawPlayer()
+        player3.DrawPlayer()
 
-                        if (failAllowed == True):
-                            failPoints += card.value
-                            print("Added ", card.value, " to the fail points, Total: ", failPoints)
-                        else:
-                            print("You cannot use that card until a murder attempt occurs")
-                    
+        displayCurrentPlayer(default_font, playerList[turnOrder])
 
-                    CardInPlay = card
-                    #drawCardAction = False # if player plays a card set drawcard to false
-                    displayCards = False
+        #logic for displaying Cards to current player
+        if (displayCards == True):
+            
+            # will place first card in top right
+            card_x = 0
+            card_y = 0
+            count = 0
 
-                    # if the card being used is a fail card it will be removed from player rather than being placed into the discard pile
-                    if (card.card_type == 'fail'):
-                        currentPlayerHand.pop(count)
-                    else: 
-                        discardPile.append(card)
-                        currentPlayerHand.pop(count)
+            for card in currentPlayerHand:
+                
+                card.showCardTest(screen, card_x, 0, cardScale)
+                
+                # On click of this button execute a function that will use a card but have
+                # if statements deciding action based on card type. if a player has already
+                # played a card the select buttons will not be shown
+                if (playCard == True):
+                    if useCardButton.drawUseCardButton(screen, card_x, 0.2) == True:
+
+                        if (card.card_type == 'move'):
                             
+                            oldMovePoints = moveActionPoints # testing movement cards
 
-            card_x += cardPlacement
-            count += 1
+                            movementAction = True
+                            moveActionPoints += card.value
+                        
+                        if (card.card_type == 'weapon'):
 
-    # TEMP FOR TESTING | this will show the card that player 1 has
-    #print(player1Hand[0].room_index)
-    #player1Hand[0].showCard(screen, 2, 2, 0.1)
-    #player1Hand[0].showCardTest(screen, 0.4, 0.4, 0.1)
+                            # after a weapon card is played a player cannot play another
+                            if (WeaponCard == False):
+                                print("You cannot play another Weapon card!")
+                            else:
+                                WeaponCard = False
+                                drawCardAction = False # if player plays a card set drawcard to false
+                                if (playerList[turnOrder].room_index == card.room_index):
+                                    murderPoints = card.bonus_value
+                                else:
+                                    murderPoints = card.value
 
-    pygame.display.update()
-    clock.tick(60)
+                                print("Player ", turnOrder, " has ", murderPoints, " murderPoints.")
+                        
+                        if (card.card_type == 'fail'):
+
+                            if (failAllowed == True):
+                                failPoints += card.value
+                                print("Added ", card.value, " to the fail points, Total: ", failPoints)
+                            else:
+                                print("You cannot use that card until a murder attempt occurs")
+                        
+
+                        CardInPlay = card
+                        #drawCardAction = False # if player plays a card set drawcard to false
+                        displayCards = False
+
+                        # if the card being used is a fail card it will be removed from player rather than being placed into the discard pile
+                        if (card.card_type == 'fail'):
+                            currentPlayerHand.pop(count)
+                        else: 
+                            discardPile.append(card)
+                            currentPlayerHand.pop(count)
+                                
+
+                card_x += cardPlacement
+                count += 1
+
+        # TEMP FOR TESTING | this will show the card that player 1 has
+        #print(player1Hand[0].room_index)
+        #player1Hand[0].showCard(screen, 2, 2, 0.1)
+        #player1Hand[0].showCardTest(screen, 0.4, 0.4, 0.1)
+
+        pygame.display.update()
+        clock.tick(60)
