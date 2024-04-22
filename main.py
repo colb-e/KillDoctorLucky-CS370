@@ -112,8 +112,8 @@ elif (screen_L >= 752):
     moveButtonScale = 0.3
     cardScale = 0.35
     cardPlacement = 0.075
-    currentDisplayTextScale_W = 0.8
-    currentDisplayRectScale = 0.20
+    currentDisplayTextScale_W = 0.73
+    currentDisplayRectScale = 0.30
 
 else:
     sidebarScale = 0.5
@@ -135,7 +135,7 @@ def displayCurrentPlayer(font, currentPlayer):
     text_x = board_W * currentDisplayTextScale_W
     text_y = 0
     rect_x = text_x + (text_x * currentDisplayRectScale)
-    rect_y = 12
+    rect_y = 1 # 12
     
     screen.blit(text, (text_x, text_y))
     pygame.draw.rect(screen, color, (rect_x, rect_y, 50, 30))
@@ -279,11 +279,10 @@ def drawCard(playerIndex, playerHands, mainDeck):
     mainDeck.pop(-1)
         
 startingCards(playerHands, cardDeck)
+state = "menu"
 
 # *** Main game loop ***
 while True:
-
-    state = "menu"
     
     # While the state is the menu, draw the menu
     while (state == "menu"):
@@ -382,15 +381,36 @@ while True:
             room.roomsList[newRoomIndex].room_count += 1
             updateRoom(previousRoomIndex)
 
+            # If there is more people than just Dr lucky in the room he just moved into..
+            if (room.roomsList[newRoomIndex].room_count > 1):
+                if (turnOrder == 3):
+                    X = 1
+                else:
+                    X = turnOrder + 1
+                
+                Y = True
+                
+                while(Y == True):
+                    
+                    if (playerList[X].room_index == newRoomIndex):
+                        turnOrder = X
+                        Y = False
+                        
+                    elif(X == 3):
+                        X = 1
+                        
+                    else:
+                        X += 1
+                  
             # if the turn order is at the last player loop back to the first human player and skip Dr. Lucky
-            if turnOrder == 3:
+            elif turnOrder == 3:
 
                 turnOrder = 1 # this will stay as 1 since Dr. lucky will only take an action when a player ends their turn
 
             # else change the turn order index to the current index + 1
             else:
                 turnOrder += 1
-
+            
         # ** Move button **
         if moveActionButton.drawButton(screen) == True:
             if moveActionPoints > 0:
