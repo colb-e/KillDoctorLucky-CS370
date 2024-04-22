@@ -79,10 +79,8 @@ adjacentRooms23 = [6, 21, 23]
 adjacentRooms24 = [0, 6, 21, 22]
 
 
-
 allAdjacentRooms = [adjacentRooms1, adjacentRooms2, adjacentRooms3, adjacentRooms4, adjacentRooms5, adjacentRooms6, adjacentRooms7, adjacentRooms8, adjacentRooms9, adjacentRooms10, adjacentRooms11, adjacentRooms12,
                     adjacentRooms13, adjacentRooms14, adjacentRooms15, adjacentRooms16, adjacentRooms17, adjacentRooms18, adjacentRooms19, adjacentRooms20, adjacentRooms21, adjacentRooms22, adjacentRooms23, adjacentRooms24]
-
 
 #Each list will represent a room and store the sight lines from that room
 
@@ -112,6 +110,6 @@ sightLineRoom23 = [6, 7, 20, 21]
 sightLineRoom24 = [0, 3, 14]
 
 
-
 allSightLines = [sightLineRoom1, sightLineRoom2, sightLineRoom3, sightLineRoom4, sightLineRoom5, sightLineRoom6, sightLineRoom7, sightLineRoom8, sightLineRoom9, sightLineRoom10, sightLineRoom11, sightLineRoom12, sightLineRoom13,
                 sightLineRoom14, sightLineRoom15, sightLineRoom16, sightLineRoom17, sightLineRoom18, sightLineRoom19, sightLineRoom20, sightLineRoom21, sightLineRoom22, sightLineRoom23, sightLineRoom24]
+
