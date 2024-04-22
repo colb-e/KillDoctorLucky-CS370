@@ -142,6 +142,17 @@ def displayCurrentPlayer(font, currentPlayer):
 
 #  *** Buttons ***
 
+# Menu Start Game Button
+startGameImage = pygame.image.load("images/StartButton.png")
+startGameButton = button.Button(screen, startGameImage, 2.05, 1.05, sidebarScale)
+
+# Menu Credits Button
+creditsImage = pygame.image.load("images/CreditsButton.png")
+creditsButton = button.Button(screen, creditsImage, 3.6, 1.05, sidebarScale)
+# Menu Quit Button
+quitMenuImage = pygame.image.load("images/QuitGameButton.png")
+quitMenuButton = button.Button(screen, quitMenuImage, 1.4, 1.05, sidebarScale)
+
 # Next turn Button
 nextTurnImage = pygame.image.load("images/nextturnbutton.png")
 nextTurnButton = button.Button(screen, nextTurnImage, 1, 1000, sidebarScale)
@@ -300,10 +311,24 @@ while True:
                     pygame.quit()
                     running = False
                     exit()
-                if event.key == pygame.K_RETURN:
-                    state = "board"
-                if event.key == pygame.K_SPACE:
-                    state = "credits"
+            
+             # Start Game Button
+        if startGameButton.drawButton(screen) == True:
+            state = "board"
+            
+        # Credits Button
+        if creditsButton.drawButton(screen) == True:
+            state = "credits"
+        
+        # Quit Menu Button
+        if quitMenuButton.drawButton(screen) == True:
+            pygame.quit()
+            running = False
+            exit()
+                    
+                    
+                    
+                    
                     
         pygame.display.update()
         clock.tick(60)
