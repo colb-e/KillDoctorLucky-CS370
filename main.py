@@ -90,6 +90,13 @@ credits_L = screen_L
 credits = pygame.image.load("images/credits.png").convert()
 credits = pygame.transform.scale(credits, (credits_W, credits_L)).convert()
 
+# *** Win Screen ***
+win_W = screen_W
+win_L = screen_L
+winScreen = pygame.image.load("images/winScreen.png").convert()
+winScreen = pygame.transform.scale(winScreen, (win_W, win_L)).convert()
+
+
 # *** Sidebar ***
 sidebar_W = screen_W - board_W
 
@@ -335,14 +342,9 @@ while True:
             pygame.quit()
             running = False
             exit()
-                    
-                    
-                    
-                    
-                    
+                            
         pygame.display.update()
         clock.tick(60)
-        
         
     # While the state is the credits, display the credits screen
     while (state == "credits"):
@@ -362,6 +364,26 @@ while True:
                 if event.key == pygame.K_SPACE:
                     state = "menu"
                     
+        pygame.display.update()
+        clock.tick(60)
+
+    while (state == "win"):
+
+        screen.blit(winScreen, (0,0))
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+
+        if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    pygame.quit()
+                    running = False
+                    exit()
+                if event.key == pygame.K_SPACE:
+                    state = "menu"
+
         pygame.display.update()
         clock.tick(60)
 
@@ -459,6 +481,7 @@ while True:
                     if (totalPoints > 0):
                         #player kills Dr.Lucky
                         print ("Dr.Lucky is killed")
+                        state = "win"
 
                     #Player cannot kill Dr.Lucky
                     else:
